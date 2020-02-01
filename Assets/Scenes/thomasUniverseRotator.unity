@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 9b6ea50c9b55df34bb078ee0fc02c128, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -159,6 +159,7 @@ MonoBehaviour:
   CharacterSpeed: 20
   RotationSpeed: 90
   WorldRootToRotate: {fileID: 2070996519}
+  TimeRequiredToPatchLeak: 0.3
 --- !u!136 &11060944
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -292,7 +293,7 @@ Camera:
   m_GameObject: {fileID: 414084851}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -391,7 +392,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RocketHolePrefab: {fileID: 5277777307940007745, guid: 346d22aa1b8f54355966d0e9ea4f9e24,
     type: 3}
-  SpawnRate: 1
+  SpawnRate: 3
 --- !u!1 &721751662
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,7 +448,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1428074318}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []

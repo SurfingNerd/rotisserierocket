@@ -20,6 +20,8 @@ public class RocketEngineerPlayerController : MonoBehaviour
 
     public GameObject WorldRootToRotate;
 
+    public float TimeRequiredToPatchLeak = 0.3f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -121,7 +123,15 @@ public class RocketEngineerPlayerController : MonoBehaviour
         {
             if ( Input.GetKey(KeyCode.E))
             {
-                FixCurrentLeak();
+                m_timeWorkedOnThisLeak += Time.deltaTime;
+                if (m_timeWorkedOnThisLeak > TimeRequiredToPatchLeak)
+                {
+                    FixCurrentLeak();
+                }
+            }
+            else
+            {
+                m_timeWorkedOnThisLeak = 0;
             }
         }
 
@@ -132,6 +142,9 @@ public class RocketEngineerPlayerController : MonoBehaviour
 
 
     private RocketLeak m_currentLeak;
+    private float m_timeWorkedOnThisLeak = 0.0f;
+
+    private List<RocketLeak> m_otherLeaksInRange = new List<RocketLeak>();
 
      //When the Primitive collides with the walls, it will reverse direction
     public void NotifyLeakInRegion(RocketLeak leak)
@@ -146,9 +159,12 @@ public class RocketEngineerPlayerController : MonoBehaviour
             //we switch the nearest Leak if it
             if (Vector3.Distance(this.transform.position, leak.transform.position) < Vector3.Distance(this.transform.position, m_currentLeak.transform.position))
             {
-                
                 m_currentLeak = leak;
                 m_currentLeak.ActivateHighlight();
+            }
+            else
+            {
+                m_otherLeaksInRange.Add(leak);
             }
         }
 
@@ -161,6 +177,10 @@ public class RocketEngineerPlayerController : MonoBehaviour
             leak.DeactivateHighlight();
             m_currentLeak = null;
         }
+        else
+        {
+            m_otherLeaksInRange.Remove(leak);
+        }
     }
 
     private void FixCurrentLeak()
@@ -169,6 +189,28 @@ public class RocketEngineerPlayerController : MonoBehaviour
         LevelManager.Inst.currentRocketStatus.rocketLeaks.Remove(m_currentLeak);
         Destroy(m_currentLeak.gameObject);
         m_currentLeak = null;
+
+
+        foreach(RocketLeak leak in m_otherLeaksInRange)
+        {
+            if (m_currentLeak == null)
+            {
+                m_currentLeak = leak;
+            }
+            else
+            {
+                if (Vector3.Distance(this.transform.position, leak.transform.position) <
+                    Vector3.Distance(this.transform.position, m_currentLeak.transform.position))
+                    {
+                        m_currentLeak = leak;
+                    }
+            }
+        }
+
+        if (m_currentLeak != null)
+        {
+            m_currentLeak.ActivateHighlight();
+        }
     }
 
     #endregion
