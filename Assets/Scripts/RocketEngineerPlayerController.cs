@@ -29,6 +29,13 @@ public class RocketEngineerPlayerController : MonoBehaviour
         }
     }
 
+    bool CanMove(Vector3 direction)
+    {
+        Debug.DrawLine(transform.position,transform.position+(direction * 1f), Color.green, 1  );
+        return !Physics.Raycast(transform.position, direction, 1f);
+       
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -41,36 +48,66 @@ public class RocketEngineerPlayerController : MonoBehaviour
 
         if (isRight)
         {
-            CurrentRotation += RotationSpeed * Time.deltaTime;
-            if (CurrentRotation > 360)
+            if (CanMove(Vector3.right))
             {
-                CurrentRotation -= 360;
+                CurrentRotation += RotationSpeed * Time.deltaTime;
+                if (CurrentRotation > 360)
+                {
+                    CurrentRotation -= 360;
+                }
+
             }
+            else
+            {
+                Debug.Log("Unable to move right - Blocked by Object.");
+            }
+            
         }
         if (isLeft)
         {
-            CurrentRotation -= RotationSpeed * Time.deltaTime;
-            if (CurrentRotation < 0)
+            if (CanMove(Vector3.left))
             {
-                CurrentRotation += 360;
+                CurrentRotation -= RotationSpeed * Time.deltaTime;
+                if (CurrentRotation < 0)
+                {
+                    CurrentRotation += 360;
+                }
+            }
+            else
+            {
+                Debug.Log("Unable to move left - Blocked by Object.");
             }
         }
 
         if (isFront)
         {
-            currentPosition += CharacterSpeed  * Time.deltaTime;
-            if (currentPosition > MaxPositionZ)
+            if (CanMove(Vector3.forward))
             {
-                currentPosition = MaxPositionZ;
+                currentPosition += CharacterSpeed  * Time.deltaTime;
+                if (currentPosition > MaxPositionZ)
+                {
+                    currentPosition = MaxPositionZ;
+                }
+            }
+            else
+            {
+                Debug.Log("Unable to move forward - Blocked by Object.");
             }
         }
 
         if (isBack)
         {
-            currentPosition -= CharacterSpeed  * Time.deltaTime;
-            if (currentPosition < MinPositionZ)
+            if (CanMove(Vector3.back))
             {
-                currentPosition = MinPositionZ;
+                currentPosition -= CharacterSpeed  * Time.deltaTime;
+                if (currentPosition < MinPositionZ)
+                {
+                    currentPosition = MinPositionZ;
+                }
+            }
+            else
+            {
+                Debug.Log("Unable to move backward - Blocked by Object.");
             }
         }
 
