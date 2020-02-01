@@ -16,6 +16,7 @@ public class LevelManager : Singleton<LevelManager>
     private float startTime = 0;
     private float currentOxygenKilos;
     private bool outOfOxygen = false;
+    public bool lowOnOxygen = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -43,7 +44,7 @@ public class LevelManager : Singleton<LevelManager>
         }
         else if (currentOxygenKilos <= oxygenWarningLevelKilos)
         {
-
+            lowOnOxygen = true;
         }
     }
 
