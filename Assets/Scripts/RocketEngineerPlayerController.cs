@@ -27,6 +27,8 @@ public class RocketEngineerPlayerController : MonoBehaviour
         {
             Debug.LogError("This Component needs to have a GameObject Attached to Rotate the Universe.");
         }
+
+        this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.MinPositionZ);
     }
 
     bool CanMove(Vector3 direction)
@@ -118,9 +120,26 @@ public class RocketEngineerPlayerController : MonoBehaviour
         Debug.Log("Rotation: " + CurrentRotation.ToString("#.###"));
     }
 
+    #region Triggers for Leaks
+
+     //When the Primitive collides with the walls, it will reverse direction
+    public void NotifyLeakInRegion(RocketLeak leak)
+    {
+        LevelManager.Inst.currentRocketStatus.rocketLeaks.Remove(leak);
+        Destroy(leak.gameObject);
+    }
+
+    public void NotifyLeakExited(RocketLeak leak)
+    {
+        Debug.LogWarning("leak Exited.");
+    }
+
+    #endregion
+
+
 
     #region Character Animation
-    		void UpdateAnimator(Vector3 move)
+    	void UpdateAnimator(Vector3 move)
 		{
 			// // update the animator parameters
 			// m_Animator.SetFloat("Forward", m_ForwardAmount, 0.1f, Time.deltaTime);
