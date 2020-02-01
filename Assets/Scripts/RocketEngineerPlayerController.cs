@@ -41,7 +41,6 @@ public class RocketEngineerPlayerController : MonoBehaviour
 
     //Drilling
     private float m_timeDrillingAHole = 0.0f;
-    private Vector3 m_drillingPosition = Vector3.zero;
 
 
     // Start is called before the first frame update
@@ -83,13 +82,13 @@ public class RocketEngineerPlayerController : MonoBehaviour
             m_timeDrillingAHole += Time.deltaTime;
             if (m_timeDrillingAHole > TimeRequiredToDrillALeak)
             {
-                LevelManager.Inst.currentRocketStatus.AddLeak(m_drillingPosition, new Quaternion(), RocketLeakPrefab, this.WorldRootToRotate.transform, 1.0f);
+                Debug.LogWarning("Drilled a Leak");
+                LevelManager.Inst.currentRocketStatus.AddLeak(transform.position, new Quaternion(), RocketLeakPrefab, this.WorldRootToRotate.transform, 1.0f);
+                m_timeDrillingAHole = 0.0f;
             }
             return;
         }
         
-
-        m_drillingPosition = Vector3.zero;
         m_timeDrillingAHole = 0.0f;
 
         if (isRight)

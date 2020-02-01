@@ -79,7 +79,8 @@ MonoBehaviour:
   WorldRootToRotate: {fileID: 0}
   TimeRequiredToPatchLeak: 0.3
   TimeRequiredToDrillALeak: 0.5
-  RocketLeakPrefab: {fileID: 0}
+  RocketLeakPrefab: {fileID: 5277777307940007745, guid: 346d22aa1b8f54355966d0e9ea4f9e24,
+    type: 3}
 --- !u!54 &5642847434358768222
 Rigidbody:
   m_ObjectHideFlags: 0
