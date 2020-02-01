@@ -16,11 +16,17 @@ public class LevelManager : Singleton<LevelManager>
     private float startTime = 0;
     private float currentOxygenKilos;
     private bool outOfOxygen = false;
+
+
+    public RocketStatus currentRocketStatus;
+
     // Start is called before the first frame update
     void Start()
     {
         startTime = Time.time;
         currentOxygenKilos = startingOxygenKilos;
+        currentRocketStatus = new RocketStatus();
+
     }
 
     // Update is called once per frame
