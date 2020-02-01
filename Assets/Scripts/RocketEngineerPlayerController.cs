@@ -17,6 +17,8 @@ public class RocketEngineerPlayerController : MonoBehaviour
     public AudioClip[] PlayerPatchLeakClips = new AudioClip[4];
     public AudioClip[] PlayerDrillClips = new AudioClip[4];
 
+    public AudioClip[] PlayerFootstepsClips = new AudioClip[4];
+
     float CurrentRotation = 0;
     float currentPosition = 0;
 
@@ -105,6 +107,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
                 if (CurrentRotation > 360)
                 {
                     CurrentRotation -= 360;
+                    PlayFootsteps();
                 }
 
             }
@@ -122,6 +125,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
                 if (CurrentRotation < 0)
                 {
                     CurrentRotation += 360;
+                    PlayFootsteps();
                 }
             }
             else
@@ -138,6 +142,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
                 if (currentPosition > MaxPositionZ)
                 {
                     currentPosition = MaxPositionZ;
+                    PlayFootsteps();
                 }
             }
             else
@@ -154,6 +159,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
                 if (currentPosition < MinPositionZ)
                 {
                     currentPosition = MinPositionZ;
+                    PlayFootsteps();
                 }
             }
             else
@@ -193,6 +199,16 @@ public class RocketEngineerPlayerController : MonoBehaviour
     }
 
     #region  Leaks
+
+    private void PlayFootsteps()
+    {
+        if (!m_playerSounds.isPlaying)
+        {
+            int randomClipId = Random.Range(0, this.PlayerFootstepsClips.Length);
+            m_playerSounds.clip = this.PlayerFootstepsClips[randomClipId];
+            m_playerSounds.Play();
+        }
+    }
 
 
     private void StartDrillingLeakEffects()
