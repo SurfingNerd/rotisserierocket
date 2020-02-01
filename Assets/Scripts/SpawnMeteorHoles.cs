@@ -32,9 +32,13 @@ public class SpawnMeteorHoles : MonoBehaviour
 
             Quaternion correctRotation = new  Quaternion();
             GameObject go  = (GameObject)Instantiate(RocketHolePrefab, position, correctRotation);
+            RocketLeak rocketLeak = go.GetComponent<RocketLeak>();
+            rocketLeak.size = 1.0f;
 
-            RocketHole hole = new RocketHole(1.0f, position, go);
-            m_currentRocketStatus.rocketHoles.Add(hole);
+            go.transform.SetParent(transform, true);
+
+            //RocketHole hole = new RocketHole(1.0f, position, go);
+            LevelManager.Inst.currentRocketStatus.rocketLeaks.Add(rocketLeak);
             
         }
     }

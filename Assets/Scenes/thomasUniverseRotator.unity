@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 11060945}
   - component: {fileID: 11060944}
   - component: {fileID: 11060943}
+  - component: {fileID: 11060948}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -233,6 +234,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &11060948
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11060942}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!4 &192807419 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2200786317179737223, guid: 898a67e98142c2545803c8947381059c,
@@ -354,6 +371,27 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!1 &486084911 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2941302070103189140, guid: 898a67e98142c2545803c8947381059c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1762760792}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &486084912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486084911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e822833733017d647b38530c1d5a18f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RocketHolePrefab: {fileID: 5277777307940007745, guid: 346d22aa1b8f54355966d0e9ea4f9e24,
+    type: 3}
+  SpawnRate: 1
 --- !u!1 &721751662
 GameObject:
   m_ObjectHideFlags: 0
