@@ -155,7 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MinPositionZ: -50
   MaxPositionZ: 50
-  CharacterSpeed: 5
+  CharacterSpeed: 20
   RotationSpeed: 90
   WorldRootToRotate: {fileID: 2070996519}
 --- !u!136 &11060944
