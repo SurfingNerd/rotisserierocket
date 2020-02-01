@@ -79,12 +79,18 @@ public class RocketEngineerPlayerController : MonoBehaviour
                 //drilling
         if (Input.GetKey(KeyCode.Q))
         {
+            if (m_timeDrillingAHole == 0)
+            {
+                StartDrillingLeakEffects();
+            }
             m_timeDrillingAHole += Time.deltaTime;
+            
             if (m_timeDrillingAHole > TimeRequiredToDrillALeak)
             {
                 Debug.LogWarning("Drilled a Leak");
                 LevelManager.Inst.currentRocketStatus.AddLeak(transform.position, new Quaternion(), RocketLeakPrefab, this.WorldRootToRotate.transform, 1.0f);
                 m_timeDrillingAHole = 0.0f;
+                EndDrillingLeakEffects();
             }
             return;
         }

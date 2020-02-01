@@ -72,10 +72,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f327ef2d516df8a4c9eb39d74a4fb1d2, type: 3}
   - {fileID: 8300000, guid: 3fbcc2fbdcb160247afb02644ffe523c, type: 3}
   PlayerDrillClips:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 29a0db2ee4c81bdb69292826927046e0, type: 3}
+  - {fileID: 8300000, guid: de577840fca5565379a67034190747d6, type: 3}
+  - {fileID: 8300000, guid: fc843625e63dfcd429b54e537455adbf, type: 3}
+  - {fileID: 8300000, guid: 3cf57b3b87eb0d08bbd5ff79ee256aeb, type: 3}
   WorldRootToRotate: {fileID: 0}
   TimeRequiredToPatchLeak: 0.3
   TimeRequiredToDrillALeak: 0.5
