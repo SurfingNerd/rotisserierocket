@@ -35,7 +35,7 @@ public class TargetPosition : MonoBehaviour
 
         Vector3 relativePosition = gameObject.transform.InverseTransformPoint(targetStartingPosition);
 
-        float scalingFactor = (targetStartingPosition.magnitude / relativePosition.magnitude);
+        float scalingFactor = targetStartingPosition.magnitude / relativePosition.magnitude;
 
         relativePosition = relativePosition * scalingFactor;
 
@@ -44,7 +44,7 @@ public class TargetPosition : MonoBehaviour
         targetObject.transform.localScale = new Vector3(scalingFactor, scalingFactor, scalingFactor);
     }
 
-    public void AddLeak(GameObject leakId, Quaternion leakDirection, float severity)
+    public void AddLeak(GameObject leakId, Quaternion leakDirection)
     {
         leaks.Add(leakId, leakDirection);
     }
