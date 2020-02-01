@@ -20,6 +20,8 @@ public class RocketEngineerPlayerController : MonoBehaviour
 
     public GameObject WorldRootToRotate;
 
+    public float TimeRequiredToPatchLeak = 0.3f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +29,8 @@ public class RocketEngineerPlayerController : MonoBehaviour
         {
             Debug.LogError("This Component needs to have a GameObject Attached to Rotate the Universe.");
         }
+
+        this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.MinPositionZ);
     }
 
     bool CanMove(Vector3 direction)
@@ -59,7 +63,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
             }
             else
             {
-                Debug.Log("Unable to move right - Blocked by Object.");
+                //Debug.Log("Unable to move right - Blocked by Object.");
             }
             
         }
@@ -75,7 +79,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
             }
             else
             {
-                Debug.Log("Unable to move left - Blocked by Object.");
+                //Debug.Log("Unable to move left - Blocked by Object.");
             }
         }
 
@@ -91,7 +95,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
             }
             else
             {
-                Debug.Log("Unable to move forward - Blocked by Object.");
+                //Debug.Log("Unable to move forward - Blocked by Object.");
             }
         }
 
@@ -107,7 +111,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
             }
             else
             {
-                Debug.Log("Unable to move backward - Blocked by Object.");
+                //Debug.Log("Unable to move backward - Blocked by Object.");
             }
         }
 
@@ -115,12 +119,106 @@ public class RocketEngineerPlayerController : MonoBehaviour
 
         this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, currentPosition);
 
-        Debug.Log("Rotation: " + CurrentRotation.ToString("#.###"));
+        if (m_currentLeak != null)
+        {
+            if ( Input.GetKey(KeyCode.E))
+            {
+                m_timeWorkedOnThisLeak += Time.deltaTime;
+                if (m_timeWorkedOnThisLeak > TimeRequiredToPatchLeak)
+                {
+                    FixCurrentLeak();
+                }
+            }
+            else
+            {
+                m_timeWorkedOnThisLeak = 0;
+            }
+        }
+
+        //Debug.Log("Rotation: " + CurrentRotation.ToString("#.###"));
     }
+
+    #region  Leaks
+
+
+    private RocketLeak m_currentLeak;
+    private float m_timeWorkedOnThisLeak = 0.0f;
+
+    private List<RocketLeak> m_otherLeaksInRange = new List<RocketLeak>();
+
+     //When the Primitive collides with the walls, it will reverse direction
+    public void NotifyLeakInRegion(RocketLeak leak)
+    {
+        if (m_currentLeak==null)
+        {
+            m_currentLeak = leak;
+            m_currentLeak.ActivateHighlight();
+        }
+        else
+        {
+            //we switch the nearest Leak if it
+            if (Vector3.Distance(this.transform.position, leak.transform.position) < Vector3.Distance(this.transform.position, m_currentLeak.transform.position))
+            {
+                m_currentLeak = leak;
+                m_currentLeak.ActivateHighlight();
+            }
+            else
+            {
+                m_otherLeaksInRange.Add(leak);
+            }
+        }
+
+    }
+
+    public void NotifyLeakExited(RocketLeak leak)
+    {
+        if (m_currentLeak == leak)
+        {
+            leak.DeactivateHighlight();
+            m_currentLeak = null;
+        }
+        else
+        {
+            m_otherLeaksInRange.Remove(leak);
+        }
+    }
+
+    private void FixCurrentLeak()
+    {
+        m_currentLeak.DeactivateHighlight();
+        LevelManager.Inst.currentRocketStatus.rocketLeaks.Remove(m_currentLeak);
+        Destroy(m_currentLeak.gameObject);
+        m_currentLeak = null;
+
+
+        foreach(RocketLeak leak in m_otherLeaksInRange)
+        {
+            if (m_currentLeak == null)
+            {
+                m_currentLeak = leak;
+            }
+            else
+            {
+                if (Vector3.Distance(this.transform.position, leak.transform.position) <
+                    Vector3.Distance(this.transform.position, m_currentLeak.transform.position))
+                    {
+                        m_currentLeak = leak;
+                    }
+            }
+        }
+
+        if (m_currentLeak != null)
+        {
+            m_currentLeak.ActivateHighlight();
+        }
+    }
+
+    #endregion
+
 
 
     #region Character Animation
-    		void UpdateAnimator(Vector3 move)
+    	void UpdateAnimator(Vector3 move)
 		{
 			// // update the animator parameters
 			// m_Animator.SetFloat("Forward", m_ForwardAmount, 0.1f, Time.deltaTime);
