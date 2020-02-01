@@ -61,7 +61,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
             }
             else
             {
-                Debug.Log("Unable to move right - Blocked by Object.");
+                //Debug.Log("Unable to move right - Blocked by Object.");
             }
             
         }
@@ -77,7 +77,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
             }
             else
             {
-                Debug.Log("Unable to move left - Blocked by Object.");
+                //Debug.Log("Unable to move left - Blocked by Object.");
             }
         }
 
@@ -93,7 +93,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
             }
             else
             {
-                Debug.Log("Unable to move forward - Blocked by Object.");
+                //Debug.Log("Unable to move forward - Blocked by Object.");
             }
         }
 
@@ -109,7 +109,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
             }
             else
             {
-                Debug.Log("Unable to move backward - Blocked by Object.");
+                //Debug.Log("Unable to move backward - Blocked by Object.");
             }
         }
 
@@ -117,21 +117,58 @@ public class RocketEngineerPlayerController : MonoBehaviour
 
         this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, currentPosition);
 
-        Debug.Log("Rotation: " + CurrentRotation.ToString("#.###"));
+        if (m_currentLeak != null)
+        {
+            if ( Input.GetKey(KeyCode.E))
+            {
+                FixCurrentLeak();
+            }
+        }
+
+        //Debug.Log("Rotation: " + CurrentRotation.ToString("#.###"));
     }
 
-    #region Triggers for Leaks
+    #region  Leaks
+
+
+    private RocketLeak m_currentLeak;
 
      //When the Primitive collides with the walls, it will reverse direction
     public void NotifyLeakInRegion(RocketLeak leak)
     {
-        LevelManager.Inst.currentRocketStatus.rocketLeaks.Remove(leak);
-        Destroy(leak.gameObject);
+        if (m_currentLeak==null)
+        {
+            m_currentLeak = leak;
+            m_currentLeak.ActivateHighlight();
+        }
+        else
+        {
+            //we switch the nearest Leak if it
+            if (Vector3.Distance(this.transform.position, leak.transform.position) < Vector3.Distance(this.transform.position, m_currentLeak.transform.position))
+            {
+                
+                m_currentLeak = leak;
+                m_currentLeak.ActivateHighlight();
+            }
+        }
+
     }
 
     public void NotifyLeakExited(RocketLeak leak)
     {
-        Debug.LogWarning("leak Exited.");
+        if (m_currentLeak == leak)
+        {
+            leak.DeactivateHighlight();
+            m_currentLeak = null;
+        }
+    }
+
+    private void FixCurrentLeak()
+    {
+        m_currentLeak.DeactivateHighlight();
+        LevelManager.Inst.currentRocketStatus.rocketLeaks.Remove(m_currentLeak);
+        Destroy(m_currentLeak.gameObject);
+        m_currentLeak = null;
     }
 
     #endregion
