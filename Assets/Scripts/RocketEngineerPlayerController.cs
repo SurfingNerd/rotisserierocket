@@ -14,6 +14,8 @@ public class RocketEngineerPlayerController : MonoBehaviour
     public float RotationSpeed = 90; 
 
 
+    public AudioClip[] PlayerPatchLeakClips = new AudioClip[4];
+
     float CurrentRotation = 0;
     float currentPosition = 0;
 
@@ -23,6 +25,10 @@ public class RocketEngineerPlayerController : MonoBehaviour
     public float TimeRequiredToPatchLeak = 0.3f;
 
     private int m_StandardOnlyLayerMask;
+
+    private AudioSource m_playerSounds;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +41,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
         this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.MinPositionZ);
 
         m_StandardOnlyLayerMask = LayerMask.GetMask("Default");
+        m_playerSounds = GetComponent<AudioSource>();
     }
 
     bool CanMove(Vector3 direction)
@@ -127,9 +134,14 @@ public class RocketEngineerPlayerController : MonoBehaviour
         {
             if ( Input.GetKey(KeyCode.E))
             {
+                if (m_timeWorkedOnThisLeak == 0)
+                {
+                    StartFixingLeaks();
+                }
                 m_timeWorkedOnThisLeak += Time.deltaTime;
                 if (m_timeWorkedOnThisLeak > TimeRequiredToPatchLeak)
                 {
+                    EndFixingLeaks();
                     FixCurrentLeak();
                 }
             }
@@ -143,6 +155,19 @@ public class RocketEngineerPlayerController : MonoBehaviour
     }
 
     #region  Leaks
+
+    private void StartFixingLeaks()
+    {
+        int randomClipId = Random.Range(0, this.PlayerPatchLeakClips.Length);
+
+        m_playerSounds.clip = this.PlayerPatchLeakClips[randomClipId];
+        m_playerSounds.Play();        
+    }
+
+    private void EndFixingLeaks()
+    {
+
+    }
 
 
     private RocketLeak m_currentLeak;
