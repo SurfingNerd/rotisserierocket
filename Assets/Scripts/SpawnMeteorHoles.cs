@@ -24,21 +24,15 @@ public class SpawnMeteorHoles : MonoBehaviour
     void Update()
     {
         m_lastSpawn += Time.deltaTime;
-        if (m_lastSpawn >SpawnRate)
+        if (m_lastSpawn > SpawnRate)
         {
             m_lastSpawn = 0;
 
             Vector3 position = new Vector3(-2.98f, 18.26f, 88.43f);
 
             Quaternion correctRotation = new  Quaternion();
-            GameObject go  = (GameObject)Instantiate(RocketHolePrefab, position, correctRotation);
-            RocketLeak rocketLeak = go.GetComponent<RocketLeak>();
-            rocketLeak.size = 1.0f;
+            LevelManager.Inst.currentRocketStatus.AddLeak(position, correctRotation, RocketHolePrefab, transform, 1.0f);
 
-            go.transform.SetParent(transform, true);
-
-            //RocketHole hole = new RocketHole(1.0f, position, go);
-            LevelManager.Inst.currentRocketStatus.rocketLeaks.Add(rocketLeak);
             
         }
     }

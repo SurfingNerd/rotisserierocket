@@ -14,6 +14,9 @@ public class RocketEngineerPlayerController : MonoBehaviour
     public float RotationSpeed = 90; 
 
 
+    public AudioClip[] PlayerPatchLeakClips = new AudioClip[4];
+    public AudioClip[] PlayerDrillClips = new AudioClip[4];
+
     float CurrentRotation = 0;
     float currentPosition = 0;
 
@@ -21,6 +24,24 @@ public class RocketEngineerPlayerController : MonoBehaviour
     public GameObject WorldRootToRotate;
 
     public float TimeRequiredToPatchLeak = 0.3f;
+
+    public float TimeRequiredToDrillALeak = 0.5f;
+
+    public GameObject RocketLeakPrefab;
+
+    private int m_StandardOnlyLayerMask;
+
+    private AudioSource m_playerSounds;
+
+    //Leaks
+    private RocketLeak m_currentLeak;
+    private float m_timeWorkedOnThisLeak = 0.0f;
+    private List<RocketLeak> m_otherLeaksInRange = new List<RocketLeak>();
+
+
+    //Drilling
+    private float m_timeDrillingAHole = 0.0f;
+
 
     // Start is called before the first frame update
     void Start()
@@ -31,12 +52,15 @@ public class RocketEngineerPlayerController : MonoBehaviour
         }
 
         this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.MinPositionZ);
+
+        m_StandardOnlyLayerMask = LayerMask.GetMask("Default");
+        m_playerSounds = GetComponent<AudioSource>();
     }
 
     bool CanMove(Vector3 direction)
     {
         Debug.DrawLine(transform.position,transform.position+(direction * 1f), Color.green, 1  );
-        return !Physics.Raycast(transform.position, direction, 1f);
+        return !Physics.Raycast(transform.position, direction, 1f, m_StandardOnlyLayerMask);
        
     }
 
@@ -49,6 +73,29 @@ public class RocketEngineerPlayerController : MonoBehaviour
         bool isBack = Input.GetKey(KeyCode.S);
 
         CurrentRotation = 0;
+
+        //if drilling, you cannot do something else.
+
+                //drilling
+        if (Input.GetKey(KeyCode.Q))
+        {
+            if (m_timeDrillingAHole == 0)
+            {
+                StartDrillingLeakEffects();
+            }
+            m_timeDrillingAHole += Time.deltaTime;
+            
+            if (m_timeDrillingAHole > TimeRequiredToDrillALeak)
+            {
+                Debug.LogWarning("Drilled a Leak");
+                LevelManager.Inst.currentRocketStatus.AddLeak(transform.position, new Quaternion(), RocketLeakPrefab, this.WorldRootToRotate.transform, 1.0f);
+                m_timeDrillingAHole = 0.0f;
+                EndDrillingLeakEffects();
+            }
+            return;
+        }
+        
+        m_timeDrillingAHole = 0.0f;
 
         if (isRight)
         {
@@ -123,9 +170,14 @@ public class RocketEngineerPlayerController : MonoBehaviour
         {
             if ( Input.GetKey(KeyCode.E))
             {
+                if (m_timeWorkedOnThisLeak == 0)
+                {
+                    StartFixingLeaks();
+                }
                 m_timeWorkedOnThisLeak += Time.deltaTime;
                 if (m_timeWorkedOnThisLeak > TimeRequiredToPatchLeak)
                 {
+                    EndFixingLeaks();
                     FixCurrentLeak();
                 }
             }
@@ -135,16 +187,39 @@ public class RocketEngineerPlayerController : MonoBehaviour
             }
         }
 
+
+
         //Debug.Log("Rotation: " + CurrentRotation.ToString("#.###"));
     }
 
     #region  Leaks
 
 
-    private RocketLeak m_currentLeak;
-    private float m_timeWorkedOnThisLeak = 0.0f;
+    private void StartDrillingLeakEffects()
+    {
+        int randomClipId = Random.Range(0, this.PlayerDrillClips.Length);
+        m_playerSounds.clip = this.PlayerDrillClips[randomClipId];
+        m_playerSounds.Play();  
+    }
 
-    private List<RocketLeak> m_otherLeaksInRange = new List<RocketLeak>();
+    private void EndDrillingLeakEffects()
+    {
+        m_playerSounds.Stop();
+    }
+
+    private void StartFixingLeaks()
+    {
+        int randomClipId = Random.Range(0, this.PlayerPatchLeakClips.Length);
+
+        m_playerSounds.clip = this.PlayerPatchLeakClips[randomClipId];
+        m_playerSounds.Play();        
+    }
+
+    private void EndFixingLeaks()
+    {
+        m_playerSounds.Stop();
+    }
+
 
      //When the Primitive collides with the walls, it will reverse direction
     public void NotifyLeakInRegion(RocketLeak leak)
@@ -159,11 +234,13 @@ public class RocketEngineerPlayerController : MonoBehaviour
             //we switch the nearest Leak if it
             if (Vector3.Distance(this.transform.position, leak.transform.position) < Vector3.Distance(this.transform.position, m_currentLeak.transform.position))
             {
+                m_otherLeaksInRange.Add(m_currentLeak);
                 m_currentLeak = leak;
                 m_currentLeak.ActivateHighlight();
             }
             else
             {
+                //Debug.Log("An additional leak git picked up.");
                 m_otherLeaksInRange.Add(leak);
             }
         }
@@ -189,6 +266,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
         LevelManager.Inst.currentRocketStatus.rocketLeaks.Remove(m_currentLeak);
         Destroy(m_currentLeak.gameObject);
         m_currentLeak = null;
+        m_timeWorkedOnThisLeak = 0.0f;
 
 
         foreach(RocketLeak leak in m_otherLeaksInRange)
