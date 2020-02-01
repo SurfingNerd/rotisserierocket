@@ -22,6 +22,8 @@ public class RocketEngineerPlayerController : MonoBehaviour
 
     public float TimeRequiredToPatchLeak = 0.3f;
 
+    private int m_StandardOnlyLayerMask;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,12 +33,14 @@ public class RocketEngineerPlayerController : MonoBehaviour
         }
 
         this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.MinPositionZ);
+
+        m_StandardOnlyLayerMask = LayerMask.GetMask("Default");
     }
 
     bool CanMove(Vector3 direction)
     {
         Debug.DrawLine(transform.position,transform.position+(direction * 1f), Color.green, 1  );
-        return !Physics.Raycast(transform.position, direction, 1f);
+        return !Physics.Raycast(transform.position, direction, 1f, m_StandardOnlyLayerMask);
        
     }
 
@@ -159,11 +163,13 @@ public class RocketEngineerPlayerController : MonoBehaviour
             //we switch the nearest Leak if it
             if (Vector3.Distance(this.transform.position, leak.transform.position) < Vector3.Distance(this.transform.position, m_currentLeak.transform.position))
             {
+                m_otherLeaksInRange.Add(m_currentLeak);
                 m_currentLeak = leak;
                 m_currentLeak.ActivateHighlight();
             }
             else
             {
+                //Debug.Log("An additional leak git picked up.");
                 m_otherLeaksInRange.Add(leak);
             }
         }
@@ -189,6 +195,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
         LevelManager.Inst.currentRocketStatus.rocketLeaks.Remove(m_currentLeak);
         Destroy(m_currentLeak.gameObject);
         m_currentLeak = null;
+        m_timeWorkedOnThisLeak = 0.0f;
 
 
         foreach(RocketLeak leak in m_otherLeaksInRange)

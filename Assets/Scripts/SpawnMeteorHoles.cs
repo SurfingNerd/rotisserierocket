@@ -24,7 +24,7 @@ public class SpawnMeteorHoles : MonoBehaviour
     void Update()
     {
         m_lastSpawn += Time.deltaTime;
-        if (m_lastSpawn >SpawnRate)
+        if (m_lastSpawn > SpawnRate)
         {
             m_lastSpawn = 0;
 
