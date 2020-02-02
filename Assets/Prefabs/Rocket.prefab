@@ -164,9 +164,6 @@ Transform:
   - {fileID: 3817440347943416660}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-<<<<<<< HEAD
-  m_LocalEulerAnglesHint: {x: -21.6, y: -12.282001, z: 62.636}
-=======
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7812708646770431989
 MonoBehaviour:
@@ -409,7 +406,6 @@ Transform:
   m_Father: {fileID: 2200786317179737223}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
->>>>>>> 18e4232f93a3c01b2b0d9171efda623d5cd96003
 --- !u!64 &6291948313702061979
 MeshCollider:
   m_ObjectHideFlags: 0
