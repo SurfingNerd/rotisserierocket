@@ -17,7 +17,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
     public AudioClip[] PlayerPatchLeakClips = new AudioClip[4];
     public AudioClip[] PlayerDrillClips = new AudioClip[4];
 
-    public AudioClip PlayerFootstepsClip;
+    public List<AudioClip> PlayerFootstepsClip;
 
     float CurrentRotation = 0;
     float currentPosition = 0;
@@ -46,6 +46,8 @@ public class RocketEngineerPlayerController : MonoBehaviour
     //Drilling
     private float m_timeDrillingAHole = 0.0f;
 
+    //Animation
+    public Animator anim;
     
 
 
@@ -73,17 +75,12 @@ public class RocketEngineerPlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bool isLeft = Input.GetKey(KeyCode.A);
-        bool isRight = Input.GetKey(KeyCode.D);
-        bool isFront = Input.GetKey(KeyCode.W);
-        bool isBack = Input.GetKey(KeyCode.S);
-
         CurrentRotation = 0;
 
         //if drilling, you cannot do something else.
 
                 //drilling
-        if (Input.GetKey(KeyCode.Q))
+        if (Input.GetButton("Drill"))
         {
             if (m_timeDrillingAHole == 0)
             {
@@ -103,7 +100,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
         
         m_timeDrillingAHole = 0.0f;
 
-        if (isRight)
+        if (Input.GetAxisRaw("Horizontal") > 0.3)
         {
             if (CanMove(Vector3.right))
             {
@@ -111,7 +108,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
                 if (CurrentRotation > 360)
                 {
                     CurrentRotation -= 360;
-                    PlayFootsteps();
+                    //PlayFootsteps();
                 }
 
             }
@@ -121,7 +118,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
             }
             
         }
-        if (isLeft)
+        if (Input.GetAxisRaw("Horizontal") < -0.3)
         {
             if (CanMove(Vector3.left))
             {
@@ -129,7 +126,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
                 if (CurrentRotation < 0)
                 {
                     CurrentRotation += 360;
-                    PlayFootsteps();
+                    //PlayFootsteps();
                 }
             }
             else
@@ -138,7 +135,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
             }
         }
 
-        if (isFront)
+        if (Input.GetAxisRaw("Vertical") > 0.3)
         {
             if (CanMove(Vector3.forward))
             {
@@ -146,7 +143,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
                 if (currentPosition > MaxPositionZ)
                 {
                     currentPosition = MaxPositionZ;
-                    PlayFootsteps();
+                    //PlayFootsteps();
                 }
             }
             else
@@ -155,7 +152,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
             }
         }
 
-        if (isBack)
+        if (Input.GetAxisRaw("Vertical") < -0.3)
         {
             if (CanMove(Vector3.back))
             {
@@ -163,7 +160,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
                 if (currentPosition < MinPositionZ)
                 {
                     currentPosition = MinPositionZ;
-                    PlayFootsteps();
+                    //PlayFootsteps();
                 }
             }
             else
@@ -171,11 +168,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
                 //Debug.Log("Unable to move backward - Blocked by Object.");
             }
         }
-
-        if (!isFront && !isBack && !isLeft && !isRight)
-        {
-            StopPlayFootsteps();
-        }
+        
 
         WorldRootToRotate.transform.RotateAround(Vector3.zero, Vector3.forward, CurrentRotation);
 
@@ -183,7 +176,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
 
         if (m_currentLeak != null)
         {
-            if ( Input.GetKey(KeyCode.E))
+            if ( Input.GetButton("Fix"))
             {
                 if (m_timeWorkedOnThisLeak == 0)
                 {
@@ -212,18 +205,18 @@ public class RocketEngineerPlayerController : MonoBehaviour
     {
         if (!m_playerSounds.isPlaying)
         {
-            m_playerSounds.clip = PlayerFootstepsClip;
+            m_playerSounds.clip = PlayerFootstepsClip[Random.Range(0, PlayerFootstepsClip.Count)];
             m_playerSounds.Play();
         }
     }
 
-    private void StopPlayFootsteps()
-    {
-        if (m_playerSounds.isPlaying && m_playerSounds.clip == PlayerFootstepsClip)
-        {
-            m_playerSounds.Stop();            
-        }
-    }
+    //private void StopPlayFootsteps()
+    //{
+    //    if (m_playerSounds.isPlaying && m_playerSounds.clip == PlayerFootstepsClip)
+    //    {
+    //        m_playerSounds.Stop();            
+    //    }
+    //}
 
 
     #region  Leaks
@@ -348,42 +341,53 @@ public class RocketEngineerPlayerController : MonoBehaviour
 
 
     #region Character Animation
-    	void UpdateAnimator(Vector3 move)
-		{
-			// // update the animator parameters
-			// m_Animator.SetFloat("Forward", m_ForwardAmount, 0.1f, Time.deltaTime);
-			// m_Animator.SetFloat("Turn", m_TurnAmount, 0.1f, Time.deltaTime);
-			// m_Animator.SetBool("Crouch", m_Crouching);
-			// m_Animator.SetBool("OnGround", m_IsGrounded);
-			// if (!m_IsGrounded)
-			// {
-			// 	m_Animator.SetFloat("Jump", m_Rigidbody.velocity.y);
-			// }
+    void UpdateAnimator(Vector3 move)
+	{
+        if(Mathf.Abs(Input.GetAxisRaw("Horizontal")) > .3f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > .3f)
+        {
+            anim.SetBool("IsRunning", true);
+            transform.LookAt(move + transform.position, Vector3.up);
+        }
+        else anim.SetBool("IsRunning", false);
 
-			// // calculate which leg is behind, so as to leave that leg trailing in the jump animation
-			// // (This code is reliant on the specific run cycle offset in our animations,
-			// // and assumes one leg passes the other at the normalized clip times of 0.0 and 0.5)
-			// float runCycle =
-			// 	Mathf.Repeat(
-			// 		m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime + m_RunCycleLegOffset, 1);
-			// float jumpLeg = (runCycle < k_Half ? 1 : -1) * m_ForwardAmount;
-			// if (m_IsGrounded)
-			// {
-			// 	m_Animator.SetFloat("JumpLeg", jumpLeg);
-			// }
+        if(Input.GetButton("Drill") || Input.GetButton("Fix"))
+        {
+            anim.SetTrigger("FixIt");
+        }
+        // // update the animator parameters
+        // m_Animator.SetFloat("Forward", m_ForwardAmount, 0.1f, Time.deltaTime);
+        // m_Animator.SetFloat("Turn", m_TurnAmount, 0.1f, Time.deltaTime);
+        // m_Animator.SetBool("Crouch", m_Crouching);
+        // m_Animator.SetBool("OnGround", m_IsGrounded);
+        // if (!m_IsGrounded)
+        // {
+        // 	m_Animator.SetFloat("Jump", m_Rigidbody.velocity.y);
+        // }
 
-			// // the anim speed multiplier allows the overall speed of walking/running to be tweaked in the inspector,
-			// // which affects the movement speed because of the root motion.
-			// if (m_IsGrounded && move.magnitude > 0)
-			// {
-			// 	m_Animator.speed = m_AnimSpeedMultiplier;
-			// }
-			// else
-			// {
-			// 	// don't use that while airborne
-			// 	m_Animator.speed = 1;
-			// }
-		}
+        // // calculate which leg is behind, so as to leave that leg trailing in the jump animation
+        // // (This code is reliant on the specific run cycle offset in our animations,
+        // // and assumes one leg passes the other at the normalized clip times of 0.0 and 0.5)
+        // float runCycle =
+        // 	Mathf.Repeat(
+        // 		m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime + m_RunCycleLegOffset, 1);
+        // float jumpLeg = (runCycle < k_Half ? 1 : -1) * m_ForwardAmount;
+        // if (m_IsGrounded)
+        // {
+        // 	m_Animator.SetFloat("JumpLeg", jumpLeg);
+        // }
+
+        // // the anim speed multiplier allows the overall speed of walking/running to be tweaked in the inspector,
+        // // which affects the movement speed because of the root motion.
+        // if (m_IsGrounded && move.magnitude > 0)
+        // {
+        // 	m_Animator.speed = m_AnimSpeedMultiplier;
+        // }
+        // else
+        // {
+        // 	// don't use that while airborne
+        // 	m_Animator.speed = 1;
+        // }
+    }
     #endregion
 
 
