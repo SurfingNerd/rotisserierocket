@@ -7,6 +7,7 @@ public class TargetPosition : MonoBehaviour
     public Camera mainCamera;
     public GameObject destinationPlanet;
     public GameObject skySphere;
+    public float normalizedDistanceToTarget;
 
     private Vector3 targetStartingPosition = new Vector3(0, 0, 0);
     private Vector3 movementVector = new Vector3(0, 0, 0);
@@ -20,7 +21,11 @@ public class TargetPosition : MonoBehaviour
         targetStartingPosition = destinationPlanet.transform.position;
         levelManager = LevelManager.Inst;
 
+<<<<<<< HEAD:Assets/TargetPosition.cs
         SetMovement(new Vector3(0, 0,0.1f));
+=======
+        SetMovement(new Vector3(0, 0, 0.05f));
+>>>>>>> 9d2b53d76dca1c28908ded05d432480ecfa96258:Assets/Scripts/TargetPosition.cs
     }
 
     // Update is called once per frame
@@ -53,6 +58,8 @@ public class TargetPosition : MonoBehaviour
         destinationPlanet.transform.LookAt(mainCamera.transform);
 
         skySphere.transform.LookAt(destinationPlanet.transform.position);
+
+        normalizedDistanceToTarget = Vector3.Distance(targetStartingPosition, currentPositon) / Vector3.Distance(targetStartingPosition, new Vector3(0,0,0));
     }
 
     public void SetMovement(Vector3 movement)

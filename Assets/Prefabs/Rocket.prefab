@@ -151,8 +151,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2941302070103189140}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.21378088, y: 0.007066478, z: 0.49052417, w: 0.8447685}
+  m_LocalPosition: {x: 0.6498456, y: 0.4412066, z: 0.2768611}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children:
   - {fileID: 7482227437809328953}
@@ -164,6 +164,9 @@ Transform:
   - {fileID: 3817440347943416660}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+<<<<<<< HEAD
+  m_LocalEulerAnglesHint: {x: -21.6, y: -12.282001, z: 62.636}
+=======
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7812708646770431989
 MonoBehaviour:
@@ -406,6 +409,7 @@ Transform:
   m_Father: {fileID: 2200786317179737223}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+>>>>>>> 18e4232f93a3c01b2b0d9171efda623d5cd96003
 --- !u!64 &6291948313702061979
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1051,7 +1055,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: d188e4f8d54768f4188ad04dfcdc16a9,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.0002356863
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d188e4f8d54768f4188ad04dfcdc16a9,
         type: 3}
@@ -1061,7 +1065,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: d188e4f8d54768f4188ad04dfcdc16a9,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.00068369624
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d188e4f8d54768f4188ad04dfcdc16a9,
         type: 3}
@@ -1248,7 +1252,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: c378b8b28ec933a44b5994a1b2cf1993,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.0008
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: c378b8b28ec933a44b5994a1b2cf1993,
         type: 3}
