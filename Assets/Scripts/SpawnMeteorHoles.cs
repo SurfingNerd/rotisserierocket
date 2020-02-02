@@ -59,7 +59,14 @@ public class SpawnMeteorHoles : MonoBehaviour
             AudioSource audio = GetComponent<AudioSource>();
             audio.PlayOneShot(m_audioClipsForImpact[Random.Range(0, m_audioClipsForImpact.Length)]);
 
-            Quaternion correctRotation = new  Quaternion();
+            
+            //Quaternion.AxisAngle()
+            float angle = Vector3.Angle(position, Vector3.up);
+            Quaternion correctRotation = Quaternion.AngleAxis(angle,Vector3.forward );
+
+            //Quaternion correctRotation = new Quaternion();
+
+            Debug.Log("TODO: Get Rotation Quaternions done the correct way!! Pos: " + position + " - angle: " + angle.ToString("0.000") + " currentRotation: " + correctRotation);
             LevelManager.Inst.currentRocketStatus.AddLeak(position, correctRotation, RocketHolePrefab, transform, 1.0f);
 
             

@@ -10,6 +10,7 @@ public class RocketStatus
     public void AddLeak(Vector3 position, Quaternion correctRotation, GameObject rocketHolePrefab, Transform parent, float size )
     {
         GameObject go  = (GameObject)GameObject.Instantiate(rocketHolePrefab, position, correctRotation);
+        //go.transform.SetPositionAndRotation(position, correctRotation);
         RocketLeak rocketLeak = go.GetComponent<RocketLeak>();
         rocketLeak.size = 1.0f;
 
