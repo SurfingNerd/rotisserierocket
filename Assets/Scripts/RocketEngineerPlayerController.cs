@@ -346,6 +346,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
         if(Mathf.Abs(Input.GetAxisRaw("Horizontal")) > .3f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > .3f)
         {
             anim.SetBool("IsRunning", true);
+            transform.LookAt(move + transform.position, Vector3.up);
         }
         else anim.SetBool("IsRunning", false);
 
