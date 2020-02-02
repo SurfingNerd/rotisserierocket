@@ -66,13 +66,13 @@ public class SpawnMeteorHoles : MonoBehaviour
 
             
             //Quaternion.AxisAngle()
-            float angle = Vector3.Angle(position, Vector3.up);
-            Quaternion correctRotation = Quaternion.AngleAxis(angle,Vector3.forward);
+            // float angle = Vector3.Angle(position, Vector3.up);
+            //Quaternion correctRotation = Quaternion.AngleAxis(angle,Vector3.forward);
 
             //Quaternion correctRotation = new Quaternion();
 
-            Debug.Log("TODO: Get Rotation Quaternions done the correct way!! Pos: " + position + " - angle: " + angle.ToString("0.000") + " currentRotation: " + correctRotation);
-            LevelManager.Inst.currentRocketStatus.AddLeak(position, correctRotation, RocketHolePrefab, transform, 1.0f);
+            //Debug.Log("TODO: Get Rotation Quaternions done the correct way!! Pos: " + position + " - angle: " + angle.ToString("0.000") + " currentRotation: " + correctRotation);
+            LevelManager.Inst.currentRocketStatus.AddLeak(position, RocketHolePrefab, transform, 1.0f);
 
             
         }
