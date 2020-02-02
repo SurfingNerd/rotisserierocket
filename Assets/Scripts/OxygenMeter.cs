@@ -6,12 +6,14 @@ using DG.Tweening;
 
 public class OxygenMeter : MonoBehaviour
 {
+    public LevelManager LvlMgr;
+
     public Image Condensation;
     public Image ReddeningArea;
     public RectTransform Dial;
-    public float OxygenLevel = LevelManager.Inst.OxygenLevel;
+    public float OxygenLevel => LvlMgr.OxygenLevel;
 
-    Severity NewSeverity => LevelManager.Inst.OxygenDepletionSeverity;
+    Severity NewSeverity => LvlMgr.OxygenDepletionSeverity;
     Severity PreviousSeverity = Severity.None;
 
     #region Redness
