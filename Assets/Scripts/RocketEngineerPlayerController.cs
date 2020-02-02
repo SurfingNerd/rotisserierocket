@@ -17,6 +17,8 @@ public class RocketEngineerPlayerController : MonoBehaviour
     public AudioClip[] PlayerPatchLeakClips = new AudioClip[4];
     public AudioClip[] PlayerDrillClips = new AudioClip[4];
 
+    public AudioClip[] PlayerFootstepsClips = new AudioClip[4];
+
     float CurrentRotation = 0;
     float currentPosition = 0;
 
@@ -28,6 +30,8 @@ public class RocketEngineerPlayerController : MonoBehaviour
     public float TimeRequiredToDrillALeak = 0.5f;
 
     public GameObject RocketLeakPrefab;
+
+    public GameObject RocketPatchPrefab;
 
     private int m_StandardOnlyLayerMask;
 
@@ -105,6 +109,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
                 if (CurrentRotation > 360)
                 {
                     CurrentRotation -= 360;
+                    PlayFootsteps();
                 }
 
             }
@@ -122,6 +127,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
                 if (CurrentRotation < 0)
                 {
                     CurrentRotation += 360;
+                    PlayFootsteps();
                 }
             }
             else
@@ -138,6 +144,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
                 if (currentPosition > MaxPositionZ)
                 {
                     currentPosition = MaxPositionZ;
+                    PlayFootsteps();
                 }
             }
             else
@@ -154,6 +161,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
                 if (currentPosition < MinPositionZ)
                 {
                     currentPosition = MinPositionZ;
+                    PlayFootsteps();
                 }
             }
             else
@@ -193,6 +201,16 @@ public class RocketEngineerPlayerController : MonoBehaviour
     }
 
     #region  Leaks
+
+    private void PlayFootsteps()
+    {
+        if (!m_playerSounds.isPlaying)
+        {
+            int randomClipId = Random.Range(0, this.PlayerFootstepsClips.Length);
+            m_playerSounds.clip = this.PlayerFootstepsClips[randomClipId];
+            m_playerSounds.Play();
+        }
+    }
 
 
     private void StartDrillingLeakEffects()
@@ -263,10 +281,28 @@ public class RocketEngineerPlayerController : MonoBehaviour
     private void FixCurrentLeak()
     {
         m_currentLeak.DeactivateHighlight();
+
+        Vector3 position = m_currentLeak.transform.position;
+        RaycastHit raycastHit;
+        if (Physics.Raycast(m_currentLeak.transform.position, Vector3.down, out raycastHit, 5000, m_StandardOnlyLayerMask))
+        {
+            position = raycastHit.point;
+        }
+        else
+        {
+            Debug.LogWarning("Raycast failed: Inaccurate position for Patch");
+        }
+
+        GameObject patch = (GameObject)Instantiate(RocketPatchPrefab, position, new Quaternion());
+        patch.transform.localScale = new Vector3(50, 50 ,50);
+        patch.transform.SetParent(WorldRootToRotate.transform);
         LevelManager.Inst.currentRocketStatus.rocketLeaks.Remove(m_currentLeak);
         Destroy(m_currentLeak.gameObject);
         m_currentLeak = null;
         m_timeWorkedOnThisLeak = 0.0f;
+
+
+        
 
 
         foreach(RocketLeak leak in m_otherLeaksInRange)
