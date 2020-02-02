@@ -177,9 +177,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: fc843625e63dfcd429b54e537455adbf, type: 3}
   - {fileID: 8300000, guid: 3cf57b3b87eb0d08bbd5ff79ee256aeb, type: 3}
   PlayerFootstepsClip:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: c61434ca171d4614280491f96f9b237b, type: 3}
+  - {fileID: 8300000, guid: 8837fb4142a334145bafa2b1215c5d09, type: 3}
+  - {fileID: 8300000, guid: 236a0b62f594d5c41831503e44e9efde, type: 3}
+  - {fileID: 8300000, guid: 943a7d536013fc0479d2508cc739b201, type: 3}
   WorldRootToRotate: {fileID: 0}
   TimeRequiredToPatchLeak: 0.3
   TimeRequiredToDrillALeak: 0.5
@@ -187,7 +188,7 @@ MonoBehaviour:
     type: 3}
   RocketPatchPrefab: {fileID: -927199367670048503, guid: 70121a0ab351bbb4e86e93cf83701f7c,
     type: 3}
-  anim: {fileID: 0}
+  anim: {fileID: 8539464663665896338}
 --- !u!82 &4336050544306609278
 AudioSource:
   m_ObjectHideFlags: 0

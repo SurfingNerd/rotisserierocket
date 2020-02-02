@@ -48,7 +48,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
 
     //Animation
     public Animator anim;
-    
+    Vector3 move;
 
 
     // Start is called before the first frame update
@@ -194,9 +194,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
                 m_timeWorkedOnThisLeak = 0;
             }
         }
-
-
-
+        UpdateAnimator();
         //Debug.Log("Rotation: " + CurrentRotation.ToString("#.###"));
     }
 
@@ -341,8 +339,9 @@ public class RocketEngineerPlayerController : MonoBehaviour
 
 
     #region Character Animation
-    void UpdateAnimator(Vector3 move)
+    void UpdateAnimator()
 	{
+        move = new Vector3(Input.GetAxisRaw("Vertical"), 0, Input.GetAxisRaw("Horizontal"));
         if(Mathf.Abs(Input.GetAxisRaw("Horizontal")) > .3f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > .3f)
         {
             anim.SetBool("IsRunning", true);
