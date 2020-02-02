@@ -13,7 +13,7 @@ public class GamePhysicsNew : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        levelManager = LevelManager.Inst;
+        levelManager = FindObjectOfType<LevelManager>();
         initialZ = gameObject.transform.position.z;
     }
 

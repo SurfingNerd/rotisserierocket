@@ -36,7 +36,7 @@ public class LevelManager : MonoBehaviour
         OxygenLevel = maxOxygen;
         currentRocketStatus = new RocketStatus();
 
-        StartGame();
+        
     }
 
     // Update is called once per frame
@@ -70,11 +70,11 @@ public class LevelManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void StartGame()
-    {
-        PlayScreen.DOScaleY(0f, 1f);
-        ShouldGameRun = true;
-    }
+    //public void StartGame()
+    //{
+    //    PlayScreen.DOScaleY(0f, 1f);
+    //    ShouldGameRun = true;
+    //}
 
     IEnumerator WinGame()
     {
@@ -82,6 +82,7 @@ public class LevelManager : MonoBehaviour
         WinScreen.DOFade(1f, 2f);
         yield return new WaitForSecondsRealtime(6f);
         PlayScreen.DOScaleY(1f, 1f);
+        FindObjectOfType<LoadManager>().LoadLevel(0);
     }
 
     IEnumerator GameOver()
@@ -90,6 +91,7 @@ public class LevelManager : MonoBehaviour
         LoseScreen.DOFade(1f, 2f);
         yield return new WaitForSecondsRealtime(6f);
         PlayScreen.DOScaleY(1f, 1f);
+        FindObjectOfType<LoadManager>().LoadLevel(0);
     }
 
     public void ConsumeOxygen(float depletionValue)
