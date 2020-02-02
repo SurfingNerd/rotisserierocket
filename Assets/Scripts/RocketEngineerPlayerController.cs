@@ -63,8 +63,8 @@ public class RocketEngineerPlayerController : MonoBehaviour
 
     bool CanMove(Vector3 direction)
     {
-        Debug.DrawLine(transform.position,transform.position+(direction * 1f), Color.green, 1  );
-        return !Physics.Raycast(transform.position, direction, 1f, m_StandardOnlyLayerMask);
+        Debug.DrawLine(transform.position,transform.position+(direction * 0.04f), Color.green, 1  );
+        return !Physics.Raycast(transform.position, direction, 0.04f, m_StandardOnlyLayerMask);
        
     }
 
@@ -293,8 +293,8 @@ public class RocketEngineerPlayerController : MonoBehaviour
             Debug.LogWarning("Raycast failed: Inaccurate position for Patch");
         }
 
-        GameObject patch = (GameObject)Instantiate(RocketPatchPrefab, position, new Quaternion());
-        patch.transform.localScale = new Vector3(50, 50 ,50);
+        GameObject patch = (GameObject)Instantiate(RocketPatchPrefab, transform.position, new Quaternion());
+        patch.transform.localScale = new Vector3(.3f, .3f, .3f);
         patch.transform.SetParent(WorldRootToRotate.transform);
         LevelManager.Inst.currentRocketStatus.rocketLeaks.Remove(m_currentLeak);
         Destroy(m_currentLeak.gameObject);

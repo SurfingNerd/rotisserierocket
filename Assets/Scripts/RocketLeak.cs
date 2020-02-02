@@ -43,7 +43,7 @@ public class RocketLeak : MonoBehaviour
      //When the Primitive collides with the walls, it will reverse direction
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.LogWarning("Entered Collider " + other.name);
+        Debug.LogWarning("Entered Collider " + other.name);
 
         if (other.CompareTag("Player"))
         {
@@ -56,7 +56,7 @@ public class RocketLeak : MonoBehaviour
     //When the Primitive exits the collision, it will change Color
     private void OnTriggerExit(Collider other)
     {
-        //Debug.LogWarning("Exited Collider " + other.name);
+        Debug.LogWarning("Exited Collider " + other.name);
         
         if (other.CompareTag("Player"))
         {
