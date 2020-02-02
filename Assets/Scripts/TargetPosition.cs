@@ -19,7 +19,7 @@ public class TargetPosition : MonoBehaviour
     {
         targetStartingPosition = destinationPlanet.transform.position;
 
-        SetMovement(new Vector3(.01f, 0, .1f));
+        SetMovement(new Vector3(0, 0, 0.05f));
     }
 
     // Update is called once per frame
