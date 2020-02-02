@@ -86,6 +86,8 @@ MonoBehaviour:
   TimeRequiredToDrillALeak: 0.5
   RocketLeakPrefab: {fileID: 5277777307940007745, guid: 346d22aa1b8f54355966d0e9ea4f9e24,
     type: 3}
+  RocketPatchPrefab: {fileID: -927199367670048503, guid: 70121a0ab351bbb4e86e93cf83701f7c,
+    type: 3}
 --- !u!54 &5642847434358768222
 Rigidbody:
   m_ObjectHideFlags: 0

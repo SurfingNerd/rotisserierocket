@@ -31,6 +31,8 @@ public class RocketEngineerPlayerController : MonoBehaviour
 
     public GameObject RocketLeakPrefab;
 
+    public GameObject RocketPatchPrefab;
+
     private int m_StandardOnlyLayerMask;
 
     private AudioSource m_playerSounds;
@@ -279,10 +281,28 @@ public class RocketEngineerPlayerController : MonoBehaviour
     private void FixCurrentLeak()
     {
         m_currentLeak.DeactivateHighlight();
+
+        Vector3 position = m_currentLeak.transform.position;
+        RaycastHit raycastHit;
+        if (Physics.Raycast(m_currentLeak.transform.position, Vector3.down, out raycastHit, 5000, m_StandardOnlyLayerMask))
+        {
+            position = raycastHit.point;
+        }
+        else
+        {
+            Debug.LogWarning("Raycast failed: Inaccurate position for Patch");
+        }
+
+        GameObject patch = (GameObject)Instantiate(RocketPatchPrefab, position, new Quaternion());
+        patch.transform.localScale = new Vector3(50, 50 ,50);
+        patch.transform.SetParent(WorldRootToRotate.transform);
         LevelManager.Inst.currentRocketStatus.rocketLeaks.Remove(m_currentLeak);
         Destroy(m_currentLeak.gameObject);
         m_currentLeak = null;
         m_timeWorkedOnThisLeak = 0.0f;
+
+
+        
 
 
         foreach(RocketLeak leak in m_otherLeaksInRange)
