@@ -1684,6 +1684,11 @@ PrefabInstance:
       propertyPath: LvlMgr
       value: 
       objectReference: {fileID: 309375022}
+    - target: {fileID: 7812708646770431989, guid: 898a67e98142c2545803c8947381059c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 898a67e98142c2545803c8947381059c, type: 3}
 --- !u!4 &1750345419 stripped
