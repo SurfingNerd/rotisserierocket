@@ -34,7 +34,12 @@ public class SpawnMeteorHoles : MonoBehaviour
 
         for(int i = 0; i < respawnRoot.transform.childCount ; i++)
         {
-            m_possibleLeakSpawns.Add(respawnRoot.transform.GetChild(i));
+            Transform t = respawnRoot.transform.GetChild(i);
+            if(t.gameObject.activeSelf)
+            {
+                m_possibleLeakSpawns.Add(t);
+            }
+            
         }
 
     }
@@ -62,7 +67,7 @@ public class SpawnMeteorHoles : MonoBehaviour
             
             //Quaternion.AxisAngle()
             float angle = Vector3.Angle(position, Vector3.up);
-            Quaternion correctRotation = Quaternion.AngleAxis(angle,Vector3.forward );
+            Quaternion correctRotation = Quaternion.AngleAxis(angle,Vector3.forward);
 
             //Quaternion correctRotation = new Quaternion();
 

@@ -15,7 +15,9 @@ public class RocketStatus
         rocketLeak.size = 1.0f;
 
         go.transform.SetParent(parent, true);
-
+        go.transform.LookAt(new Vector3(0, 0, position.z));
+        //Quaternion.LookRotation()
+        go.transform.rotation = Quaternion.LookRotation(position - new Vector3(0, 0, position.z), Vector3.forward);
         //RocketHole hole = new RocketHole(1.0f, position, go);
         rocketLeaks.Add(rocketLeak);
     }
