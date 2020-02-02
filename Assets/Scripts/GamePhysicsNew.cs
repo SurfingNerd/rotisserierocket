@@ -24,14 +24,14 @@ public class GamePhysicsNew : MonoBehaviour
 
         foreach(RocketLeak leak in levelManager.currentRocketStatus.rocketLeaks)
         {
-            x += leak.transform.position.x;
-            y += leak.transform.position.y;
+            x -= leak.transform.position.x * energyScaling;
+            y -= leak.transform.position.y * energyScaling;
         }
 
         Vector3 forwardVector = new Vector3(x, y, 1.0f);
 
         // we drag the earth closer.
-        gameObject.transform.position -= (forwardVector * energyScaling * Time.deltaTime);
+        gameObject.transform.position -= (forwardVector * Time.deltaTime);
 
         Debug.Log("Appying Force: " + forwardVector + " New Earth Position: "  + gameObject.transform.position);
     }
