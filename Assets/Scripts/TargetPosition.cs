@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TargetPosition : MonoBehaviour
 {
+    public LevelManager LvlMgr;
+
     public Camera mainCamera;
     public GameObject destinationPlanet;
     public GameObject skySphere;
@@ -12,14 +14,11 @@ public class TargetPosition : MonoBehaviour
     private Vector3 targetStartingPosition = new Vector3(0, 0, 0);
     private Vector3 movementVector = new Vector3(0, 0, 0);
     private Vector3 currentPositon = new Vector3(0, 0, 0);
-
-    private LevelManager levelManager;
-
+    
     // Start is called before the first frame update
     void Start()
     {
         targetStartingPosition = destinationPlanet.transform.position;
-        levelManager = LevelManager.Inst;
 
         SetMovement(new Vector3(0, 0, 0.05f));
     }

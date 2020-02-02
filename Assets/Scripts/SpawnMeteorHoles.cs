@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpawnMeteorHoles : MonoBehaviour
 {
-
+    public LevelManager LvlMgr;
     public GameObject RocketHolePrefab;
 
     public float SpawnRate = 5;
@@ -27,7 +27,7 @@ public class SpawnMeteorHoles : MonoBehaviour
 
     void Start()
     {
-        m_currentRocketStatus = LevelManager.Inst.currentRocketStatus;
+        m_currentRocketStatus = LvlMgr.currentRocketStatus;
         m_random = new System.Random(1);
 
         GameObject respawnRoot = GameObject.FindGameObjectWithTag("Respawn");
@@ -64,7 +64,7 @@ public class SpawnMeteorHoles : MonoBehaviour
             AudioSource audio = GetComponent<AudioSource>();
             audio.PlayOneShot(m_audioClipsForImpact[Random.Range(0, m_audioClipsForImpact.Length)]);
 
-            
+
             //Quaternion.AxisAngle()
             // float angle = Vector3.Angle(position, Vector3.up);
             //Quaternion correctRotation = Quaternion.AngleAxis(angle,Vector3.forward);
@@ -72,7 +72,7 @@ public class SpawnMeteorHoles : MonoBehaviour
             //Quaternion correctRotation = new Quaternion();
 
             //Debug.Log("TODO: Get Rotation Quaternions done the correct way!! Pos: " + position + " - angle: " + angle.ToString("0.000") + " currentRotation: " + correctRotation);
-            LevelManager.Inst.currentRocketStatus.AddLeak(position, RocketHolePrefab, transform, 1.0f);
+            LvlMgr.currentRocketStatus.AddLeak(position, RocketHolePrefab, transform, 1.0f);
 
             
         }
