@@ -13,12 +13,13 @@ public class TargetPosition : MonoBehaviour
     private Vector3 movementVector = new Vector3(0, 0, 0);
     private Vector3 currentPositon = new Vector3(0, 0, 0);
 
-    Dictionary<GameObject, Quaternion> leaks = new Dictionary<GameObject, Quaternion>();
+    private LevelManager levelManager;
 
     // Start is called before the first frame update
     void Start()
     {
         targetStartingPosition = destinationPlanet.transform.position;
+        levelManager = LevelManager.Inst;
 
         SetMovement(new Vector3(0, 0, 0.05f));
     }
@@ -26,10 +27,13 @@ public class TargetPosition : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        foreach (Quaternion rotation in leaks.Values)
+        foreach (RocketLeak leak in levelManager.currentRocketStatus.rocketLeaks)
         {
+            Quaternion rotation = leak.transform.rotation;
             movementVector = Quaternion.Lerp(Quaternion.identity, rotation, Time.deltaTime) * movementVector;
         }
+
+        //movementVector = movementVector * 0.1f;
 
         currentPositon += movementVector;
 
@@ -52,16 +56,6 @@ public class TargetPosition : MonoBehaviour
         skySphere.transform.LookAt(destinationPlanet.transform.position);
 
         normalizedDistanceToTarget = Vector3.Distance(targetStartingPosition, currentPositon) / Vector3.Distance(targetStartingPosition, new Vector3(0,0,0));
-    }
-
-    public void AddLeak(GameObject leakId, Quaternion leakDirection)
-    {
-        leaks.Add(leakId, leakDirection);
-    }
-
-    public void RemoveLeak(GameObject leakId)
-    {
-        leaks.Remove(leakId);
     }
 
     public void SetMovement(Vector3 movement)
