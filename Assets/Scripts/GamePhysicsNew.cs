@@ -6,7 +6,7 @@ public class GamePhysicsNew : MonoBehaviour
 {
     private LevelManager levelManager;
 
-    public float normalizedDistance = 0.0f;
+    public float normalizedDistanceToTarget = 0.0f;
 
     private float initialZ;
 
@@ -37,8 +37,8 @@ public class GamePhysicsNew : MonoBehaviour
         // we drag the earth closer.
         gameObject.transform.position -= (forwardVector * Time.deltaTime);
 
-        normalizedDistance = 1 - gameObject.transform.position.z / initialZ;
+        normalizedDistanceToTarget = 1 - gameObject.transform.position.z / initialZ;
 
-        Debug.Log("Appying Force: " + forwardVector + " New Earth Position: "  + gameObject.transform.position + " " + normalizedDistance);
+        //Debug.Log("Appying Force: " + forwardVector + " New Earth Position: "  + gameObject.transform.position + " " + normalizedDistance);
     }
 }
