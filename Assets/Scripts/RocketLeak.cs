@@ -6,6 +6,9 @@ public class RocketLeak : MonoBehaviour
 {
     public float size;
 
+
+    public AudioClip[] m_audioClips = new AudioClip[4];
+
     //public Vector3 position;
 
     //public GameObject gameObject;
@@ -13,7 +16,10 @@ public class RocketLeak : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        AudioSource audioSource = GetComponent<AudioSource>();
+
+        audioSource.clip = m_audioClips[Random.Range(0, m_audioClips.Length)];
+        audioSource.Play();
     }
 
     // Update is called once per frame
