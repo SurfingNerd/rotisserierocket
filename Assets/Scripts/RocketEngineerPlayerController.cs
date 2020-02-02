@@ -344,7 +344,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
     #region Character Animation
     void UpdateAnimator()
 	{
-        move = new Vector3(Input.GetAxisRaw("Vertical"), 0, Input.GetAxisRaw("Horizontal"));
+        move = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
         if(Mathf.Abs(Input.GetAxisRaw("Horizontal")) > .3f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > .3f)
         {
             anim.SetBool("IsRunning", true);
