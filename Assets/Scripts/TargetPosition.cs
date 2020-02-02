@@ -7,6 +7,7 @@ public class TargetPosition : MonoBehaviour
     public Camera mainCamera;
     public GameObject destinationPlanet;
     public GameObject skySphere;
+    public float normalizedDistanceToTarget;
 
     private Vector3 targetStartingPosition = new Vector3(0, 0, 0);
     private Vector3 movementVector = new Vector3(0, 0, 0);
@@ -49,6 +50,8 @@ public class TargetPosition : MonoBehaviour
         destinationPlanet.transform.LookAt(mainCamera.transform);
 
         skySphere.transform.LookAt(destinationPlanet.transform.position);
+
+        normalizedDistanceToTarget = Vector3.Distance(targetStartingPosition, currentPositon) / Vector3.Distance(targetStartingPosition, new Vector3(0,0,0));
     }
 
     public void AddLeak(GameObject leakId, Quaternion leakDirection)
