@@ -6,11 +6,15 @@ public class GamePhysicsNew : MonoBehaviour
 {
     private LevelManager levelManager;
 
+    public float normalizedDistance = 0.0f;
+
+    private float initialZ;
 
     // Start is called before the first frame update
     void Start()
     {
         levelManager = LevelManager.Inst;
+        initialZ = gameObject.transform.position.z;
     }
 
     // Update is called once per frame
@@ -33,6 +37,8 @@ public class GamePhysicsNew : MonoBehaviour
         // we drag the earth closer.
         gameObject.transform.position -= (forwardVector * Time.deltaTime);
 
-        Debug.Log("Appying Force: " + forwardVector + " New Earth Position: "  + gameObject.transform.position);
+        normalizedDistance = 1 - gameObject.transform.position.z / initialZ;
+
+        Debug.Log("Appying Force: " + forwardVector + " New Earth Position: "  + gameObject.transform.position + " " + normalizedDistance);
     }
 }
