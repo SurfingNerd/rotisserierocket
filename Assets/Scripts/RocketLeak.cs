@@ -22,7 +22,7 @@ public class RocketLeak : MonoBehaviour
 
         audioSource.clip = m_audioClips[Random.Range(0, m_audioClips.Length)];
         //Delay - so the "Hit" sound plays first, and the leak after that.
-        audioSource.Play(15000);
+        audioSource.PlayDelayed(0.45f);
     }
 
     // Update is called once per frame
