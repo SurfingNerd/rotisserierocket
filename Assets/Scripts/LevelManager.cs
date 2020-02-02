@@ -36,7 +36,7 @@ public class LevelManager : MonoBehaviour
         OxygenLevel = maxOxygen;
         currentRocketStatus = new RocketStatus();
 
-        StartGame();
+        
     }
 
     // Update is called once per frame
