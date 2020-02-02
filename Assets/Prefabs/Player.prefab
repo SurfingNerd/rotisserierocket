@@ -76,11 +76,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: de577840fca5565379a67034190747d6, type: 3}
   - {fileID: 8300000, guid: fc843625e63dfcd429b54e537455adbf, type: 3}
   - {fileID: 8300000, guid: 3cf57b3b87eb0d08bbd5ff79ee256aeb, type: 3}
-  PlayerFootstepsClips:
-  - {fileID: 8300000, guid: c61434ca171d4614280491f96f9b237b, type: 3}
-  - {fileID: 8300000, guid: 8837fb4142a334145bafa2b1215c5d09, type: 3}
-  - {fileID: 8300000, guid: 236a0b62f594d5c41831503e44e9efde, type: 3}
-  - {fileID: 8300000, guid: 943a7d536013fc0479d2508cc739b201, type: 3}
+  PlayerFootstepsClip: {fileID: 8300000, guid: d9c63629769ac5edfb31fa4e870b9c55, type: 3}
   WorldRootToRotate: {fileID: 0}
   TimeRequiredToPatchLeak: 0.3
   TimeRequiredToDrillALeak: 0.5
