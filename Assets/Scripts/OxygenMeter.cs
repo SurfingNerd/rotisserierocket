@@ -6,14 +6,16 @@ using DG.Tweening;
 
 public class OxygenMeter : MonoBehaviour
 {
-    public Image[] CondensationImgs;
+    public Image Condensation;
     public Image ReddeningArea;
     public RectTransform Dial;
-    public float OxygenLevel => 0.25f;
+    public float OxygenLevel = 0.25f;
     
     Severity currentSeverity = Severity.None;
 
     #region Redness
+    bool shouldRedden = false;
+
     float currentMinRed;
     float currentMaxRed;
 
@@ -43,13 +45,10 @@ public class OxygenMeter : MonoBehaviour
 
     void Update()
     {
-        //ReddeningArea.fillAmount = OxygenLevel;
         EvaluateSeverity();
-
-        /*
-        if (!isRednessAnimPlaying)
+        
+        if (!isRednessAnimPlaying && shouldRedden)
             RunRedWarningInterpolation();
-        */
 
         if (!isCondensatingAnimPlaying && shouldCondensate)
             RunCondensationInterpolation();
@@ -74,28 +73,35 @@ public class OxygenMeter : MonoBehaviour
         switch (currentSeverity)
         {
             case Severity.Low:
+                /*
+                shouldRedden = true;
                 currentMinRed = 0.25f;
                 currentMaxRed = 0.5f;
                 rednessAnimTime = 0.7f;
+                */
                 break;
             case Severity.Medium:
+                /*
+                shouldRedden = true;
                 currentMinRed = 0.5f;
                 currentMaxRed = 0.75f;
                 rednessAnimTime = 0.55f;
+                */
 
                 shouldCondensate = true;
-                currentMinCondensation = 0.2f;
-                currentMaxCondensation = 0.6f;
+                currentMinCondensation = 0f;
+                currentMaxCondensation = 0.3f;
                 condensatingAnimTime = 1.5f;
                 break;
             case Severity.High:
+                shouldRedden = true;
                 currentMinRed = 0.75f;
                 currentMaxRed = 1f;
                 rednessAnimTime = 0.4f;
-
+                
                 shouldCondensate = true;
-                currentMinCondensation = 0.4f;
-                currentMaxCondensation = 0.8f;
+                currentMinCondensation = 0.2f;
+                currentMaxCondensation = 0.6f;
                 condensatingAnimTime = 0.9f;
                 break;
             default: break;
@@ -120,36 +126,26 @@ public class OxygenMeter : MonoBehaviour
 
     void RunCondensationInterpolation()
     {
-        // make sure no anim is still playing
-        foreach (var img in CondensationImgs)
-            img.DOKill();
-
+        Condensation.DOKill();
         var newVal = (isCondensating) ? currentMaxCondensation : currentMinCondensation;
-        for (int i = 0; i < 4; i++)
-        {
-            if(i < 3) CondensationImgs[i].DOColor(new Color(1f, 1f, 1f, newVal), condensatingAnimTime).SetEase(Ease.OutSine);
-            else
-            {
-                CondensationImgs[i].DOColor(new Color(1f, 1f, 1f, newVal), condensatingAnimTime).SetEase(Ease.OutSine)
+        Condensation.DOColor(new Color(1f, 1f, 1f, newVal), condensatingAnimTime).SetEase(Ease.OutSine)
                 .OnStart(() =>
                 {
                     isCondensatingAnimPlaying = true;
                     if (!isCondensating) dialJitterCoroutine = StartCoroutine(StartDialJitter());
                     else
                     {
-                        if(dialJitterCoroutine != null) StopCoroutine(dialJitterCoroutine);
+                        if (dialJitterCoroutine != null) StopCoroutine(dialJitterCoroutine);
                         dialJitterCoroutine = null;
                         ResetDialToBase();
                     }
-                        
+
                 })
                 .onComplete += () =>
                 {
                     isCondensating = !isCondensating;
                     isCondensatingAnimPlaying = false;
                 };
-            }
-        }
     }
 
     void SetDialBasePosition()
