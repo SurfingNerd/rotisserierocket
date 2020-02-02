@@ -6,6 +6,11 @@ using UnityEngine.UI;
 
 public class DistanceMeter : MonoBehaviour
 {
+    public TargetPosition TargetPosition;
+    public float NormalizedDistanceCovered => TargetPosition.normalizedDistanceToTarget;
+    public float PreviousDistanceCovered;
+    public float Velocity => (NormalizedDistanceCovered - PreviousDistanceCovered) * (1f / Time.deltaTime);
+
     public Image SmokeTrail;
 
     public Transform Spaceship;
@@ -18,8 +23,6 @@ public class DistanceMeter : MonoBehaviour
     public TextMeshProUGUI DestinationKilometersUI;
     public int DestinationKilometersSum;
 
-    public float DistanceCovered = 0.25f;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -29,31 +32,34 @@ public class DistanceMeter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateKilometersCoveredText();
+        PreviousDistanceCovered = NormalizedDistanceCovered;
+
         UpdateSpaceshipPosition();
+        UpdateKilometersCoveredText();
+        UpdateVelocityText();
         UpdateSmokeTrailFill();
     }
 
     void UpdateVelocityText()
     {
-        VelocityUI.text = 30 + " KM/Sec";
+        VelocityUI.text = Mathf.RoundToInt(Velocity) + " KM/Sec";
     }
 
     void UpdateKilometersCoveredText()
     {
-        int kilometersCoveredSum = Mathf.FloorToInt(DistanceCovered * DestinationKilometersSum);
+        int kilometersCoveredSum = Mathf.FloorToInt(NormalizedDistanceCovered * DestinationKilometersSum);
         KilometersCoveredUI.text = kilometersCoveredSum.ToString() + "KM";
     }
 
     void UpdateSpaceshipPosition()
     {
-        var newX = Mathf.Lerp(StartPos.position.x, DestinationPos.position.x, DistanceCovered);
+        var newX = Mathf.Lerp(StartPos.position.x, DestinationPos.position.x, NormalizedDistanceCovered);
         var shipPos = Spaceship.position;
         Spaceship.position = new Vector3(newX, shipPos.y, shipPos.z);
     }
 
     void UpdateSmokeTrailFill()
     {
-        SmokeTrail.fillAmount = DistanceCovered;
+        SmokeTrail.fillAmount = NormalizedDistanceCovered;
     }
 }
