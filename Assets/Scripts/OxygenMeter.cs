@@ -9,7 +9,7 @@ public class OxygenMeter : MonoBehaviour
     public Image[] CondensationImgs;
     public Image ReddeningArea;
     public RectTransform Dial;
-    public float OxygenLevel => 0.25f;
+    public float OxygenLevel = 0.25f;
     
     Severity currentSeverity = Severity.None;
 
@@ -125,6 +125,8 @@ public class OxygenMeter : MonoBehaviour
             img.DOKill();
 
         var newVal = (isCondensating) ? currentMaxCondensation : currentMinCondensation;
+
+        /*
         for (int i = 0; i < 4; i++)
         {
             if(i < 3) CondensationImgs[i].DOColor(new Color(1f, 1f, 1f, newVal), condensatingAnimTime).SetEase(Ease.OutSine);
@@ -150,7 +152,26 @@ public class OxygenMeter : MonoBehaviour
                 };
             }
         }
-    }
+        */
+        CondensationImgs[0].DOColor(new Color(1f, 1f, 1f, newVal), condensatingAnimTime).SetEase(Ease.OutSine)
+                .OnStart(() =>
+                {
+                    isCondensatingAnimPlaying = true;
+                    if (!isCondensating) dialJitterCoroutine = StartCoroutine(StartDialJitter());
+                    else
+                    {
+                        if (dialJitterCoroutine != null) StopCoroutine(dialJitterCoroutine);
+                        dialJitterCoroutine = null;
+                        ResetDialToBase();
+                    }
+
+                })
+                .onComplete += () =>
+                {
+                    isCondensating = !isCondensating;
+                    isCondensatingAnimPlaying = false;
+                };
+}
 
     void SetDialBasePosition()
     {
