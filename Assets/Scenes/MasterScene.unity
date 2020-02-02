@@ -1542,6 +1542,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 8951256639056071728, guid: 8e4e4947290c90942a6a1a692ef10962,
+        type: 3}
+      propertyPath: WorldRootToRotate
+      value: 
+      objectReference: {fileID: 2002091872}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e4e4947290c90942a6a1a692ef10962, type: 3}
 --- !u!4 &1509300893 stripped
