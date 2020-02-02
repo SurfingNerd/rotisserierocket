@@ -300,7 +300,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Raycast failed: Inaccurate position for Patch");
+            Debug.Log("Raycast failed: Inaccurate position for Patch");
         }
 
         GameObject patch = (GameObject)Instantiate(RocketPatchPrefab, transform.position, new Quaternion());
