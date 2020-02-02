@@ -12,12 +12,13 @@ public class DistanceMeter : MonoBehaviour
 
     public Transform StartPos;
     public Transform DestinationPos;
-    
+
+    public TextMeshProUGUI VelocityUI;
     public TextMeshProUGUI KilometersCoveredUI;
     public TextMeshProUGUI DestinationKilometersUI;
     public int DestinationKilometersSum;
 
-    public float DistanceCovered => 0.25f;
+    public float DistanceCovered = 0.25f;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +32,11 @@ public class DistanceMeter : MonoBehaviour
         UpdateKilometersCoveredText();
         UpdateSpaceshipPosition();
         UpdateSmokeTrailFill();
+    }
+
+    void UpdateVelocityText()
+    {
+        VelocityUI.text = 30 + " KM/Sec";
     }
 
     void UpdateKilometersCoveredText()
