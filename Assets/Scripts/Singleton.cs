@@ -24,7 +24,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                     "' already destroyed. Returning null.");
                 return null;
             }
-
+            
             lock (m_Lock)
             {
                 if (m_Instance == null)
