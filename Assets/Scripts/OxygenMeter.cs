@@ -9,9 +9,10 @@ public class OxygenMeter : MonoBehaviour
     public Image Condensation;
     public Image ReddeningArea;
     public RectTransform Dial;
-    public float OxygenLevel = 0.25f;
-    
-    Severity currentSeverity = Severity.None;
+    public float OxygenLevel = LevelManager.Inst.OxygenLevel;
+
+    Severity NewSeverity => LevelManager.Inst.OxygenDepletionSeverity;
+    Severity PreviousSeverity = Severity.None;
 
     #region Redness
     bool shouldRedden = false;
@@ -45,7 +46,11 @@ public class OxygenMeter : MonoBehaviour
 
     void Update()
     {
-        EvaluateSeverity();
+        if(NewSeverity != PreviousSeverity)
+        {
+            PreviousSeverity = NewSeverity;
+            SetNewAnims();
+        }
         
         if (!isRednessAnimPlaying && shouldRedden)
             RunRedWarningInterpolation();
@@ -55,22 +60,10 @@ public class OxygenMeter : MonoBehaviour
 
         SetDialBasePosition();
     }
-
-    void EvaluateSeverity()
+    
+    void SetNewAnims()
     {
-        if (OxygenLevel < 0.2f && currentSeverity != Severity.High)
-            SetNewAnims(Severity.High);
-        else if (OxygenLevel < 0.4f && currentSeverity != Severity.Medium)
-            SetNewAnims(Severity.Medium);
-        else if (OxygenLevel < 0.6f && currentSeverity != Severity.Low)
-            SetNewAnims(Severity.Low);
-    }
-
-    void SetNewAnims(Severity newSeverity)
-    {
-        currentSeverity = newSeverity;
-
-        switch (currentSeverity)
+        switch (NewSeverity)
         {
             case Severity.Low:
                 /*
@@ -170,13 +163,5 @@ public class OxygenMeter : MonoBehaviour
     void ResetDialToBase()
     {
         Dial.localEulerAngles = new Vector3(0f, 0f, DialZRotation);
-    }
-
-    enum Severity
-    {
-        None,
-        Low,
-        Medium,
-        High
     }
 }
