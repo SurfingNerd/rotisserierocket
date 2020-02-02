@@ -62,9 +62,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 531b5c146740b140f86c313bca31c8cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinPositionZ: 18
-  MaxPositionZ: 115
-  CharacterSpeed: 20
+  MinPositionZ: 0.21
+  MaxPositionZ: 1.114
+  CharacterSpeed: 0.2
   RotationSpeed: 90
   PlayerPatchLeakClips:
   - {fileID: 8300000, guid: f327ef2d516df8a4c9eb39d74a4fb1d2, type: 3}
