@@ -17,7 +17,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
     public AudioClip[] PlayerPatchLeakClips = new AudioClip[4];
     public AudioClip[] PlayerDrillClips = new AudioClip[4];
 
-    public AudioClip[] PlayerFootstepsClips = new AudioClip[4];
+    public AudioClip PlayerFootstepsClip;
 
     float CurrentRotation = 0;
     float currentPosition = 0;
@@ -45,6 +45,8 @@ public class RocketEngineerPlayerController : MonoBehaviour
 
     //Drilling
     private float m_timeDrillingAHole = 0.0f;
+
+    
 
 
     // Start is called before the first frame update
@@ -170,6 +172,11 @@ public class RocketEngineerPlayerController : MonoBehaviour
             }
         }
 
+        if (!isFront && !isBack && !isLeft && !isRight)
+        {
+            StopPlayFootsteps();
+        }
+
         WorldRootToRotate.transform.RotateAround(Vector3.zero, Vector3.forward, CurrentRotation);
 
         this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, currentPosition);
@@ -200,17 +207,26 @@ public class RocketEngineerPlayerController : MonoBehaviour
         //Debug.Log("Rotation: " + CurrentRotation.ToString("#.###"));
     }
 
-    #region  Leaks
-
+    
     private void PlayFootsteps()
     {
         if (!m_playerSounds.isPlaying)
         {
-            int randomClipId = Random.Range(0, this.PlayerFootstepsClips.Length);
-            m_playerSounds.clip = this.PlayerFootstepsClips[randomClipId];
+            m_playerSounds.clip = PlayerFootstepsClip;
             m_playerSounds.Play();
         }
     }
+
+    private void StopPlayFootsteps()
+    {
+        if (m_playerSounds.isPlaying && m_playerSounds.clip == PlayerFootstepsClip)
+        {
+            m_playerSounds.Stop();            
+        }
+    }
+
+
+    #region  Leaks
 
 
     private void StartDrillingLeakEffects()
