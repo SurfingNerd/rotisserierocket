@@ -9,6 +9,8 @@ public class SpawnMeteorHoles : MonoBehaviour
 
     public float SpawnRate = 5;
 
+    public AudioClip[] m_audioClipsForImpact = new AudioClip[4];
+
 
     private float m_lastSpawn;
 
@@ -53,6 +55,9 @@ public class SpawnMeteorHoles : MonoBehaviour
             {
                 position = new Vector3(-2.98f, 18.26f, 88.43f);
             }
+
+            AudioSource audio = GetComponent<AudioSource>();
+            audio.PlayOneShot(m_audioClipsForImpact[Random.Range(0, m_audioClipsForImpact.Length)]);
 
             Quaternion correctRotation = new  Quaternion();
             LevelManager.Inst.currentRocketStatus.AddLeak(position, correctRotation, RocketHolePrefab, transform, 1.0f);
