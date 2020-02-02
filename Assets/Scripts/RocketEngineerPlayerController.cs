@@ -17,7 +17,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
     public AudioClip[] PlayerPatchLeakClips = new AudioClip[4];
     public AudioClip[] PlayerDrillClips = new AudioClip[4];
 
-    public AudioClip[] PlayerFootstepsClips = new AudioClip[4];
+    public AudioClip PlayerFootstepsClip;
 
     float CurrentRotation = 0;
     float currentPosition = 0;
@@ -46,6 +46,8 @@ public class RocketEngineerPlayerController : MonoBehaviour
     //Drilling
     private float m_timeDrillingAHole = 0.0f;
 
+    
+
 
     // Start is called before the first frame update
     void Start()
@@ -63,8 +65,8 @@ public class RocketEngineerPlayerController : MonoBehaviour
 
     bool CanMove(Vector3 direction)
     {
-        Debug.DrawLine(transform.position,transform.position+(direction * 1f), Color.green, 1  );
-        return !Physics.Raycast(transform.position, direction, 1f, m_StandardOnlyLayerMask);
+        Debug.DrawLine(transform.position,transform.position+(direction * 0.04f), Color.green, 1  );
+        return !Physics.Raycast(transform.position, direction, 0.04f, m_StandardOnlyLayerMask);
        
     }
 
@@ -170,6 +172,11 @@ public class RocketEngineerPlayerController : MonoBehaviour
             }
         }
 
+        if (!isFront && !isBack && !isLeft && !isRight)
+        {
+            StopPlayFootsteps();
+        }
+
         WorldRootToRotate.transform.RotateAround(Vector3.zero, Vector3.forward, CurrentRotation);
 
         this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, currentPosition);
@@ -200,17 +207,26 @@ public class RocketEngineerPlayerController : MonoBehaviour
         //Debug.Log("Rotation: " + CurrentRotation.ToString("#.###"));
     }
 
-    #region  Leaks
-
+    
     private void PlayFootsteps()
     {
         if (!m_playerSounds.isPlaying)
         {
-            int randomClipId = Random.Range(0, this.PlayerFootstepsClips.Length);
-            m_playerSounds.clip = this.PlayerFootstepsClips[randomClipId];
+            m_playerSounds.clip = PlayerFootstepsClip;
             m_playerSounds.Play();
         }
     }
+
+    private void StopPlayFootsteps()
+    {
+        if (m_playerSounds.isPlaying && m_playerSounds.clip == PlayerFootstepsClip)
+        {
+            m_playerSounds.Stop();            
+        }
+    }
+
+
+    #region  Leaks
 
 
     private void StartDrillingLeakEffects()
@@ -293,8 +309,8 @@ public class RocketEngineerPlayerController : MonoBehaviour
             Debug.LogWarning("Raycast failed: Inaccurate position for Patch");
         }
 
-        GameObject patch = (GameObject)Instantiate(RocketPatchPrefab, position, new Quaternion());
-        patch.transform.localScale = new Vector3(50, 50 ,50);
+        GameObject patch = (GameObject)Instantiate(RocketPatchPrefab, transform.position, new Quaternion());
+        patch.transform.localScale = new Vector3(.3f, .3f, .3f);
         patch.transform.SetParent(WorldRootToRotate.transform);
         LevelManager.Inst.currentRocketStatus.rocketLeaks.Remove(m_currentLeak);
         Destroy(m_currentLeak.gameObject);

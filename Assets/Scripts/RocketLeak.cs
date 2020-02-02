@@ -9,6 +9,8 @@ public class RocketLeak : MonoBehaviour
 
     public AudioClip[] m_audioClips = new AudioClip[4];
 
+    
+
     //public Vector3 position;
 
     //public GameObject gameObject;
@@ -19,7 +21,8 @@ public class RocketLeak : MonoBehaviour
         AudioSource audioSource = GetComponent<AudioSource>();
 
         audioSource.clip = m_audioClips[Random.Range(0, m_audioClips.Length)];
-        audioSource.Play();
+        //Delay - so the "Hit" sound plays first, and the leak after that.
+        audioSource.PlayDelayed(0.45f);
     }
 
     // Update is called once per frame
@@ -43,7 +46,7 @@ public class RocketLeak : MonoBehaviour
      //When the Primitive collides with the walls, it will reverse direction
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.LogWarning("Entered Collider " + other.name);
+        Debug.LogWarning("Entered Collider " + other.name);
 
         if (other.CompareTag("Player"))
         {
@@ -56,7 +59,7 @@ public class RocketLeak : MonoBehaviour
     //When the Primitive exits the collision, it will change Color
     private void OnTriggerExit(Collider other)
     {
-        //Debug.LogWarning("Exited Collider " + other.name);
+        Debug.LogWarning("Exited Collider " + other.name);
         
         if (other.CompareTag("Player"))
         {

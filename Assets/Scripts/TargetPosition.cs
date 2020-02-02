@@ -4,19 +4,22 @@ using UnityEngine;
 
 public class TargetPosition : MonoBehaviour
 {
-    public GameObject targetObject;
+    public Camera mainCamera;
+    public GameObject destinationPlanet;
+    public GameObject skySphere;
 
-    private Vector3 startPosition = new Vector3(0, 0, 0);
-    public Vector3 movementVector = new Vector3(0, 0, .1f);
+    private Vector3 targetStartingPosition = new Vector3(0, 0, 0);
+    private Vector3 movementVector = new Vector3(0, 0, 0);
     private Vector3 currentPositon = new Vector3(0, 0, 0);
-    public Vector3 targetStartingPosition = new Vector3(0, 0, 0);
 
     Dictionary<GameObject, Quaternion> leaks = new Dictionary<GameObject, Quaternion>();
 
     // Start is called before the first frame update
     void Start()
     {
-        targetStartingPosition = targetObject.transform.position;
+        targetStartingPosition = destinationPlanet.transform.position;
+
+        SetMovement(new Vector3(0, 0, 0.05f));
     }
 
     // Update is called once per frame
@@ -39,9 +42,13 @@ public class TargetPosition : MonoBehaviour
 
         relativePosition = relativePosition * scalingFactor;
 
-        targetObject.transform.position = relativePosition;
+        destinationPlanet.transform.position = relativePosition;
 
-        targetObject.transform.localScale = new Vector3(scalingFactor, scalingFactor, scalingFactor);
+        destinationPlanet.transform.localScale = new Vector3(scalingFactor, scalingFactor, scalingFactor / 10);
+
+        destinationPlanet.transform.LookAt(mainCamera.transform);
+
+        skySphere.transform.LookAt(destinationPlanet.transform.position);
     }
 
     public void AddLeak(GameObject leakId, Quaternion leakDirection)
@@ -52,5 +59,10 @@ public class TargetPosition : MonoBehaviour
     public void RemoveLeak(GameObject leakId)
     {
         leaks.Remove(leakId);
+    }
+
+    public void SetMovement(Vector3 movement)
+    {
+        movementVector = movement;
     }
 }
