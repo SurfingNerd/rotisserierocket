@@ -6,10 +6,14 @@ using UnityEngine.UI;
 
 public class DistanceMeter : MonoBehaviour
 {
-    public TargetPosition TargetPosition;
-    public float NormalizedDistanceCovered => TargetPosition.LvlMgr.timeProgress;
+
+    public LevelManager LevelManager;
+
+    public float NormalizedDistanceCovered => LevelManager.NormalizedDistanceCovered;
     public float PreviousDistanceCovered;
-    public float Velocity => (NormalizedDistanceCovered - PreviousDistanceCovered) * (1f / Time.deltaTime);
+
+    
+    //public float Velocity => (PreviousDistanceCovered - LevelManager.DistanceCovered) * (Time.deltaTime);
 
     public Image SmokeTrail;
 
@@ -32,17 +36,17 @@ public class DistanceMeter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PreviousDistanceCovered = NormalizedDistanceCovered;
-
         UpdateSpaceshipPosition();
         UpdateKilometersCoveredText();
         UpdateVelocityText();
         UpdateSmokeTrailFill();
+
+        PreviousDistanceCovered = NormalizedDistanceCovered;
     }
 
     void UpdateVelocityText()
     {
-        VelocityUI.text = Velocity.ToString() + " KM/Sec";
+        VelocityUI.text = ""; // Velocity.ToString("0.00000") + " KM/Sec";
     }
 
     void UpdateKilometersCoveredText()

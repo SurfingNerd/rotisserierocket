@@ -41,6 +41,10 @@ public class GamePhysicsNew : MonoBehaviour
 
         normalizedDistanceToTarget = 1 - gameObject.transform.position.z / initialZ;
 
+        levelManager.NormalizedDistanceCovered = normalizedDistanceToTarget;
+        levelManager.TotalDistance = initialZ;
+        levelManager.DistanceCovered =  gameObject.transform.position.z;
+
         Debug.Log("Distance: " + gameObject.transform.position.magnitude);
 
         if (gameObject.transform.position.magnitude < winDistance)

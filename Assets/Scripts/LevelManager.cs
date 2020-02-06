@@ -9,7 +9,7 @@ public class LevelManager : MonoBehaviour
 {
     public Image WinScreen;
     public Image LoseScreen;
-    public Transform PlayScreen;
+   
 
     [HideInInspector] public float maxTimeProgress = 1f;
     [HideInInspector] public float timeProgress = 0;
@@ -19,8 +19,17 @@ public class LevelManager : MonoBehaviour
     [HideInInspector] public float maxOxygen = 1f; //Obsolete comment: 1141kg = 1m3 uncompressed oxygen
     [HideInInspector] public float OxygenLevel;
     [HideInInspector] public Severity OxygenDepletionSeverity;
-    [HideInInspector] public int NumLeaks = 0;
-    [HideInInspector] public float OxygenDepletionPerLeak = 0.0001f;
+    [HideInInspector] public int NumLeaks => currentRocketStatus.rocketLeaks.Count;
+    
+    public float OxygenDepletionPerLeak = 0.000001f;
+
+    //calculated in the Physics
+    [HideInInspector] public float TotalDistance = 0.0001f;
+
+    //calculated in the Physics
+    [HideInInspector] public float DistanceCovered = 0.0001f;
+
+    [HideInInspector] public float NormalizedDistanceCovered;
 
     private float elapsedTimeSeconds = 0;
     private float startTime = 0;
@@ -73,7 +82,6 @@ public class LevelManager : MonoBehaviour
         ShouldGameRun = false;
         WinScreen.DOFade(1f, 2f);
         yield return new WaitForSecondsRealtime(6f);
-        PlayScreen.DOScaleY(1f, 1f);
     }
 
     IEnumerator GameOver()
@@ -81,7 +89,6 @@ public class LevelManager : MonoBehaviour
         ShouldGameRun = false;
         LoseScreen.DOFade(1f, 2f);
         yield return new WaitForSecondsRealtime(6f);
-        PlayScreen.DOScaleY(1f, 1f);
     }
 
     public void ConsumeOxygen(float depletionValue)
