@@ -10,6 +10,8 @@ public class GamePhysicsNew : MonoBehaviour
 
     private float initialZ;
 
+    public float winDistance = 120;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +26,7 @@ public class GamePhysicsNew : MonoBehaviour
         float x = 0;
         float y = 0;
 
-        float energyScaling = 1.0f;
+        float energyScaling = 100.0f;
 
         foreach(RocketLeak leak in levelManager.currentRocketStatus.rocketLeaks)
         {
@@ -32,12 +34,28 @@ public class GamePhysicsNew : MonoBehaviour
             y -= leak.transform.position.y * energyScaling;
         }
 
-        Vector3 forwardVector = new Vector3(x, y, 1.0f);
+        Vector3 forwardVector = new Vector3(x, y, 100.0f);
 
         // we drag the earth closer.
         gameObject.transform.position -= (forwardVector * Time.deltaTime);
 
         normalizedDistanceToTarget = 1 - gameObject.transform.position.z / initialZ;
+
+        Debug.Log("Distance: " + gameObject.transform.position.magnitude);
+
+        if (gameObject.transform.position.magnitude < winDistance)
+        {
+            //UnityEngine.SceneManagement.Scene scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName("WinScene");
+            UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("WinScene");
+        }
+
+
+        if (gameObject.transform.position.z < -1000)
+        {
+            //UnityEngine.SceneManagement.Scene scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName("GameOverScene");
+            UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("GameOverScene");
+            
+        }
 
         //Debug.Log("Appying Force: " + forwardVector + " New Earth Position: "  + gameObject.transform.position + " " + normalizedDistance);
     }

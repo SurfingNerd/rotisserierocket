@@ -70,11 +70,11 @@ public class LevelManager : MonoBehaviour
         Application.Quit();
     }
 
-    //public void StartGame()
-    //{
-    //    PlayScreen.DOScaleY(0f, 1f);
-    //    ShouldGameRun = true;
-    //}
+    public void StartGame()
+    {
+       PlayScreen.DOScaleY(0f, 1f);
+       ShouldGameRun = true;
+    }
 
     IEnumerator WinGame()
     {
