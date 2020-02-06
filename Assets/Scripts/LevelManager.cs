@@ -49,6 +49,12 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetButton("Restart"))
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        }
+
+
         elapsedTimeSeconds = Time.time - startTime;
 
         ConsumeOxygen(NumLeaks * OxygenDepletionPerLeak * Time.deltaTime);
