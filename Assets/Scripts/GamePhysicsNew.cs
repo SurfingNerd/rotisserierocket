@@ -17,6 +17,8 @@ public class GamePhysicsNew : MonoBehaviour
     {
         levelManager = FindObjectOfType<LevelManager>();
         initialZ = gameObject.transform.position.z;
+        levelManager.TotalDistance = initialZ;
+        levelManager.DistanceMissing = levelManager.TotalDistance;
     }
 
     // Update is called once per frame
@@ -41,25 +43,26 @@ public class GamePhysicsNew : MonoBehaviour
 
         normalizedDistanceToTarget = 1 - gameObject.transform.position.z / initialZ;
 
+
         levelManager.NormalizedDistanceCovered = normalizedDistanceToTarget;
-        levelManager.TotalDistance = initialZ;
-        levelManager.DistanceCovered =  gameObject.transform.position.z;
+
+        levelManager.DistanceMissing = gameObject.transform.position.magnitude;
 
         Debug.Log("Distance: " + gameObject.transform.position.magnitude);
 
-        if (gameObject.transform.position.magnitude < winDistance)
-        {
-            //UnityEngine.SceneManagement.Scene scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName("WinScene");
-            UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("WinScene");
-        }
+        // if (gameObject.transform.position.magnitude < winDistance)
+        // {
+        //     //UnityEngine.SceneManagement.Scene scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName("WinScene");
+        //     UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("WinScene");
+        // }
 
 
-        if (gameObject.transform.position.z < -1000)
-        {
-            //UnityEngine.SceneManagement.Scene scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName("GameOverScene");
-            UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("GameOverScene");
+        // if (gameObject.transform.position.z < -1000)
+        // {
+        //     //UnityEngine.SceneManagement.Scene scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName("GameOverScene");
+        //     UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("GameOverScene");
             
-        }
+        // }
 
         //Debug.Log("Appying Force: " + forwardVector + " New Earth Position: "  + gameObject.transform.position + " " + normalizedDistance);
     }

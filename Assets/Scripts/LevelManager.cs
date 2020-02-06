@@ -9,12 +9,7 @@ public class LevelManager : MonoBehaviour
 {
     public Image WinScreen;
     public Image LoseScreen;
-   
 
-    [HideInInspector] public float maxTimeProgress = 1f;
-    [HideInInspector] public float timeProgress = 0;
-
-    [HideInInspector] public float levelDurationSeconds = 120;
 
     [HideInInspector] public float maxOxygen = 1f; //Obsolete comment: 1141kg = 1m3 uncompressed oxygen
     [HideInInspector] public float OxygenLevel;
@@ -24,10 +19,12 @@ public class LevelManager : MonoBehaviour
     public float OxygenDepletionPerLeak = 0.000001f;
 
     //calculated in the Physics
-    [HideInInspector] public float TotalDistance = 0.0001f;
+    [HideInInspector] public float TotalDistance;
+
+    [HideInInspector] public float DistanceMissing;
 
     //calculated in the Physics
-    [HideInInspector] public float DistanceCovered = 0.0001f;
+    [HideInInspector] public float DistanceCovered => (TotalDistance - DistanceMissing);
 
     [HideInInspector] public float NormalizedDistanceCovered;
 
@@ -35,6 +32,9 @@ public class LevelManager : MonoBehaviour
     private float startTime = 0;
     
     public RocketStatus currentRocketStatus;
+
+    // How Close do i need to get to the planet to actually Win the game ?
+    public float WinCoditionMinimumDistance = 120;
 
     [HideInInspector] public bool ShouldGameRun = false;
 
@@ -51,25 +51,38 @@ public class LevelManager : MonoBehaviour
     {
         elapsedTimeSeconds = Time.time - startTime;
 
-        timeProgress = elapsedTimeSeconds / levelDurationSeconds;
-
         ConsumeOxygen(NumLeaks * OxygenDepletionPerLeak * Time.deltaTime);
         EvaluateOxygenDepletionSeverity();
         CheckLoseConditions();
+        CheckWinConditions();
     }
 
     void EvaluateOxygenDepletionSeverity()
     {
-        if (OxygenLevel < 0.2f) OxygenDepletionSeverity = Severity.High;
+        if (OxygenLevel <= 0f) OxygenDepletionSeverity = Severity.Empty;
+        else if (OxygenLevel < 0.2f) OxygenDepletionSeverity = Severity.High;
         else if (OxygenLevel < 0.4f) OxygenDepletionSeverity = Severity.Medium;
         else if (OxygenLevel < 0.6f) OxygenDepletionSeverity = Severity.Low;
-        else if (OxygenLevel <= 0f) OxygenDepletionSeverity = Severity.Empty;
     }
 
     void CheckLoseConditions()
     {
-        if(timeProgress >= maxTimeProgress || OxygenDepletionSeverity == Severity.Empty)
+        //Debug.Log("OxygenLevel: " + this.OxygenLevel.ToString("0.000") + " Serverity: " + OxygenDepletionSeverity);
+        if(OxygenDepletionSeverity == Severity.Empty)
+        {
+            //Debug.LogError("Game Over");
             StartCoroutine(GameOver());
+        }
+    }
+
+    void CheckWinConditions()
+    {
+        //Debug.Log("OxygenLevel: " + this.OxygenLevel.ToString("0.000") + " Serverity: " + OxygenDepletionSeverity);
+        if(DistanceMissing <= WinCoditionMinimumDistance)
+        {
+            //Debug.LogError("Game Over");
+            StartCoroutine(WinGame());
+        }        
     }
 
     public void ExitGame()

@@ -227,6 +227,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &99902647 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6238529476691672237, guid: 5cbf40443e7454540b59e6f89040e19b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1618940675}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &303851366
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -325,18 +337,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c348f8ee7c11c9c48a91c5e30cd603e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WinScreen: {fileID: 0}
-  LoseScreen: {fileID: 0}
-  maxTimeProgress: 1
-  timeProgress: 0
-  levelDurationSeconds: 120
+  WinScreen: {fileID: 1465986542}
+  LoseScreen: {fileID: 99902647}
   maxOxygen: 1
   OxygenLevel: 0
   OxygenDepletionSeverity: 0
-  OxygenDepletionPerLeak: 0.0035
+  OxygenDepletionPerLeak: 0.007
   TotalDistance: 0.0001
-  DistanceCovered: 0.0001
+  DistanceMissing: 0
   NormalizedDistanceCovered: 0.0001
+  WinCoditionMinimumDistance: 120
   ShouldGameRun: 0
 --- !u!4 &309375023
 Transform:
@@ -886,6 +896,18 @@ Transform:
   m_Father: {fileID: 1610525279}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1465986542 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6238529477747108578, guid: 5cbf40443e7454540b59e6f89040e19b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1618940675}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1500720446 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1483767963364047615, guid: 132a7851a94839c49b6b611cfe2a68da,
