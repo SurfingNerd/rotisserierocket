@@ -14,9 +14,6 @@ public class DistanceMeter : MonoBehaviour
 
     
     //public float Velocity => (PreviousDistanceCovered - LevelManager.DistanceCovered) * (Time.deltaTime);
-
-    public Image SmokeTrail;
-
     public Transform Spaceship;
 
     public Transform StartPos;
@@ -39,7 +36,6 @@ public class DistanceMeter : MonoBehaviour
         UpdateSpaceshipPosition();
         UpdateKilometersCoveredText();
         UpdateVelocityText();
-        UpdateSmokeTrailFill();
 
         PreviousDistanceCovered = NormalizedDistanceCovered;
     }
@@ -60,10 +56,5 @@ public class DistanceMeter : MonoBehaviour
         var newX = Mathf.Lerp(StartPos.position.x, DestinationPos.position.x, NormalizedDistanceCovered);
         var shipPos = Spaceship.position;
         Spaceship.position = new Vector3(newX, shipPos.y, shipPos.z);
-    }
-
-    void UpdateSmokeTrailFill()
-    {
-        SmokeTrail.fillAmount = NormalizedDistanceCovered;
     }
 }
