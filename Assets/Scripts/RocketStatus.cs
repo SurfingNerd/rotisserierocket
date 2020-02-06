@@ -20,6 +20,16 @@ public class RocketStatus
         go.transform.rotation = Quaternion.LookRotation(position - new Vector3(0, 0, position.z), Vector3.forward);
         //RocketHole hole = new RocketHole(1.0f, position, go);
         rocketLeaks.Add(rocketLeak);
+
+        var rootGOs = parent.gameObject.scene.GetRootGameObjects();
+        foreach (var item in rootGOs)
+            if (item.name == "LevelManager")
+            {
+                item.GetComponent<LevelManager>().NumLeaks = rocketLeaks.Count;
+                Debug.Log("Num leaks: " + rocketLeaks.Count);
+            }
+
+                
     }
 }
 

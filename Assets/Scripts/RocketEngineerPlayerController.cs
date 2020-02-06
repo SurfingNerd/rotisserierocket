@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RocketEngineerPlayerController : MonoBehaviour
 {
-
+    private LevelManager LvlMgr;
     public float MinPositionZ = -50;
     public float MaxPositionZ = 50;
 
@@ -54,6 +54,8 @@ public class RocketEngineerPlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        LvlMgr = FindObjectOfType<LevelManager>();
+
         if (WorldRootToRotate == null)
         {
             Debug.LogError("This Component needs to have a GameObject Attached to Rotate the Universe.");
@@ -91,7 +93,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
             if (m_timeDrillingAHole > TimeRequiredToDrillALeak)
             {
                 Debug.LogWarning("Drilled a Leak");
-                LevelManager.Inst.currentRocketStatus.AddLeak(transform.position, RocketLeakPrefab, this.WorldRootToRotate.transform, 1.0f);
+                LvlMgr.currentRocketStatus.AddLeak(transform.position, RocketLeakPrefab, this.WorldRootToRotate.transform, 1.0f);
                 m_timeDrillingAHole = 0.0f;
                 EndDrillingLeakEffects();
             }
@@ -303,7 +305,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
         GameObject patch = (GameObject)Instantiate(RocketPatchPrefab, transform.position, new Quaternion());
         patch.transform.localScale = new Vector3(.3f, .3f, .3f);
         patch.transform.SetParent(WorldRootToRotate.transform);
-        LevelManager.Inst.currentRocketStatus.rocketLeaks.Remove(m_currentLeak);
+        LvlMgr.currentRocketStatus.rocketLeaks.Remove(m_currentLeak);
         Destroy(m_currentLeak.gameObject);
         m_currentLeak = null;
         m_timeWorkedOnThisLeak = 0.0f;
