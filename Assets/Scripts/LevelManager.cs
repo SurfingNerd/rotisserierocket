@@ -101,6 +101,7 @@ public class LevelManager : MonoBehaviour
         ShouldGameRun = false;
         WinScreen.DOFade(1f, 2f);
         yield return new WaitForSecondsRealtime(6f);
+        UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("StartScene");
     }
 
     IEnumerator GameOver()
@@ -108,6 +109,7 @@ public class LevelManager : MonoBehaviour
         ShouldGameRun = false;
         LoseScreen.DOFade(1f, 2f);
         yield return new WaitForSecondsRealtime(6f);
+        UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("StartScene");
     }
 
     public void ConsumeOxygen(float depletionValue)
