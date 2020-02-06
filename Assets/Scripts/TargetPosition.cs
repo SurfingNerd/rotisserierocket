@@ -26,9 +26,15 @@ public class TargetPosition : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //return;
         foreach (RocketLeak leak in LvlMgr.currentRocketStatus.rocketLeaks)
         {
+            //Debug.DrawLine(leak.transform.position, leak.transform.position  );
             Quaternion rotation = leak.transform.rotation;
+
+            Vector3 origin = leak.transform.position;
+            
+
             movementVector = Quaternion.Lerp(Quaternion.identity, rotation, Time.deltaTime) * movementVector;
         }
 

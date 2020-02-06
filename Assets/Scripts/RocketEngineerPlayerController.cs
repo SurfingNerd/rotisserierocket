@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RocketEngineerPlayerController : MonoBehaviour
 {
-    private LevelManager LvlMgr;
+
     public float MinPositionZ = -50;
     public float MaxPositionZ = 50;
 
@@ -24,6 +24,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
 
 
     public GameObject WorldRootToRotate;
+    public LevelManager levelManager;
 
     public float TimeRequiredToPatchLeak = 0.3f;
 
@@ -54,12 +55,12 @@ public class RocketEngineerPlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        LvlMgr = FindObjectOfType<LevelManager>();
-
         if (WorldRootToRotate == null)
         {
             Debug.LogError("This Component needs to have a GameObject Attached to Rotate the Universe.");
         }
+        
+        levelManager = FindObjectOfType<LevelManager>();
 
         this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.MinPositionZ);
 
@@ -93,7 +94,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
             if (m_timeDrillingAHole > TimeRequiredToDrillALeak)
             {
                 Debug.LogWarning("Drilled a Leak");
-                LvlMgr.currentRocketStatus.AddLeak(transform.position, RocketLeakPrefab, this.WorldRootToRotate.transform, 1.0f);
+                levelManager.currentRocketStatus.AddLeak(transform.position, RocketLeakPrefab, this.WorldRootToRotate.transform, 1.0f);
                 m_timeDrillingAHole = 0.0f;
                 EndDrillingLeakEffects();
             }
@@ -299,13 +300,13 @@ public class RocketEngineerPlayerController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Raycast failed: Inaccurate position for Patch");
+            Debug.Log("Raycast failed: Inaccurate position for Patch");
         }
 
         GameObject patch = (GameObject)Instantiate(RocketPatchPrefab, transform.position, new Quaternion());
         patch.transform.localScale = new Vector3(.3f, .3f, .3f);
         patch.transform.SetParent(WorldRootToRotate.transform);
-        LvlMgr.currentRocketStatus.rocketLeaks.Remove(m_currentLeak);
+        levelManager.currentRocketStatus.rocketLeaks.Remove(m_currentLeak);
         Destroy(m_currentLeak.gameObject);
         m_currentLeak = null;
         m_timeWorkedOnThisLeak = 0.0f;
@@ -343,7 +344,7 @@ public class RocketEngineerPlayerController : MonoBehaviour
     #region Character Animation
     void UpdateAnimator()
 	{
-        move = new Vector3(Input.GetAxisRaw("Vertical"), 0, Input.GetAxisRaw("Horizontal"));
+        move = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
         if(Mathf.Abs(Input.GetAxisRaw("Horizontal")) > .3f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > .3f)
         {
             anim.SetBool("IsRunning", true);
