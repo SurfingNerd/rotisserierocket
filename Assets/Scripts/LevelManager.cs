@@ -20,7 +20,7 @@ public class LevelManager : MonoBehaviour
     [HideInInspector] public float OxygenLevel;
     [HideInInspector] public Severity OxygenDepletionSeverity;
     [HideInInspector] public int NumLeaks = 0;
-    [HideInInspector] public float OxygenDepletionPerLeak = 0.1f;
+    [HideInInspector] public float OxygenDepletionPerLeak = 0.0001f;
 
     private float elapsedTimeSeconds = 0;
     private float startTime = 0;
@@ -35,8 +35,6 @@ public class LevelManager : MonoBehaviour
         startTime = Time.time;
         OxygenLevel = maxOxygen;
         currentRocketStatus = new RocketStatus();
-
-        
     }
 
     // Update is called once per frame
@@ -46,7 +44,7 @@ public class LevelManager : MonoBehaviour
 
         timeProgress = elapsedTimeSeconds / levelDurationSeconds;
 
-        ConsumeOxygen(NumLeaks * OxygenDepletionPerLeak);
+        ConsumeOxygen(NumLeaks * OxygenDepletionPerLeak * Time.deltaTime);
         EvaluateOxygenDepletionSeverity();
         CheckLoseConditions();
     }
@@ -70,19 +68,12 @@ public class LevelManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void StartGame()
-    {
-       PlayScreen.DOScaleY(0f, 1f);
-       ShouldGameRun = true;
-    }
-
     IEnumerator WinGame()
     {
         ShouldGameRun = false;
         WinScreen.DOFade(1f, 2f);
         yield return new WaitForSecondsRealtime(6f);
         PlayScreen.DOScaleY(1f, 1f);
-        FindObjectOfType<LoadManager>().LoadLevel(0);
     }
 
     IEnumerator GameOver()
@@ -91,7 +82,6 @@ public class LevelManager : MonoBehaviour
         LoseScreen.DOFade(1f, 2f);
         yield return new WaitForSecondsRealtime(6f);
         PlayScreen.DOScaleY(1f, 1f);
-        FindObjectOfType<LoadManager>().LoadLevel(0);
     }
 
     public void ConsumeOxygen(float depletionValue)

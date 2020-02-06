@@ -675,6 +675,11 @@ PrefabInstance:
       propertyPath: MaxPositionZ
       value: 1.114
       objectReference: {fileID: 0}
+    - target: {fileID: 5642847434358768223, guid: eaed7ce2d06de46eb89d302b84399b3d,
+        type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 1945575778}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eaed7ce2d06de46eb89d302b84399b3d, type: 3}
 --- !u!1001 &1278471791
@@ -1117,6 +1122,11 @@ PrefabInstance:
     - target: {fileID: 6238529477986141514, guid: 5cbf40443e7454540b59e6f89040e19b,
         type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6238529478169262388, guid: 5cbf40443e7454540b59e6f89040e19b,
+        type: 3}
+      propertyPath: m_Color.a
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6238529478295462146, guid: 5cbf40443e7454540b59e6f89040e19b,

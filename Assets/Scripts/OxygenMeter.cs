@@ -11,7 +11,7 @@ public class OxygenMeter : MonoBehaviour
     public Image Condensation;
     public Image ReddeningArea;
     public RectTransform Dial;
-    public float OxygenLevel => LvlMgr.OxygenLevel;
+    public float OxygenLevel => (LvlMgr.OxygenLevel < 0f) ? 0f : LvlMgr.OxygenLevel;
 
     Severity NewSeverity => LvlMgr.OxygenDepletionSeverity;
     Severity PreviousSeverity = Severity.None;
@@ -145,7 +145,7 @@ public class OxygenMeter : MonoBehaviour
 
     void SetDialBasePosition()
     {
-        DialZRotation = MaxDialZRotation + (240f * OxygenLevel);
+        DialZRotation = MaxDialZRotation + (240f - (240f * OxygenLevel));
         Dial.localEulerAngles = new Vector3(0f, 0f, DialZRotation);
     }
 

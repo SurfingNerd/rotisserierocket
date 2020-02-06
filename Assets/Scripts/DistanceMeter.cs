@@ -7,9 +7,7 @@ using UnityEngine.UI;
 public class DistanceMeter : MonoBehaviour
 {
     public TargetPosition TargetPosition;
-
-    public GamePhysicsNew GamePhysicsNew;
-    public float NormalizedDistanceCovered => (GamePhysicsNew != null ? GamePhysicsNew.normalizedDistanceToTarget : TargetPosition.normalizedDistanceToTarget);
+    public float NormalizedDistanceCovered => TargetPosition.LvlMgr.timeProgress;
     public float PreviousDistanceCovered;
     public float Velocity => (NormalizedDistanceCovered - PreviousDistanceCovered) * (1f / Time.deltaTime);
 
@@ -29,8 +27,6 @@ public class DistanceMeter : MonoBehaviour
     void Start()
     {
         DestinationKilometersUI.text = DestinationKilometersSum.ToString() + "KM";
-
-        //GetComponent<>
     }
 
     // Update is called once per frame
@@ -46,7 +42,7 @@ public class DistanceMeter : MonoBehaviour
 
     void UpdateVelocityText()
     {
-        VelocityUI.text = Mathf.RoundToInt(Velocity) + " KM/Sec";
+        VelocityUI.text = Velocity.ToString() + " KM/Sec";
     }
 
     void UpdateKilometersCoveredText()
